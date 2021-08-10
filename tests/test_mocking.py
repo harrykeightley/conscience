@@ -1,8 +1,8 @@
 """
 Ensure that mocking correctly captures subsequent calls to methods.
 """
+from director.mocking import MixinBase
 import unittest
-import director
 import traceback
 
 
@@ -26,15 +26,19 @@ class MockMe:
         self.on_call(p0, p1, kw0=kw0, kw1=kw1)
 
 
+class DropCalls(MixinBase):
+    pass
+
+
 class TestCoreMock(unittest.TestCase):
 
     def test_mock(self):
         """test the basic ability to mock where calls are simply replaced"""
-        mock1 = director.CoreMock(MockMe, "no_args")
-        mock2 = director.CoreMock(MockMe, "single_arg")
-        mock3 = director.CoreMock(MockMe, "many_positional")
-        mock4 = director.CoreMock(MockMe, "single_kw")
-        mock5 = director.CoreMock(MockMe, "both_args")
+        mock1 = DropCalls(MockMe, "no_args")
+        mock2 = DropCalls(MockMe, "single_arg")
+        mock3 = DropCalls(MockMe, "many_positional")
+        mock4 = DropCalls(MockMe, "single_kw")
+        mock5 = DropCalls(MockMe, "both_args")
 
         def fail_if_called(*args, **kwargs):
             traceback.print_stack(f=None, limit=None, file=None)
@@ -55,15 +59,15 @@ class TestCoreMock(unittest.TestCase):
         mock5.restore()
 
     def test_restore(self):
-        mock = director.CoreMock(MockMe, "no_args")
+        mock = DropCalls(MockMe, "no_args")
         mock.restore()
-        mock = director.CoreMock(MockMe, "single_arg")
+        mock = DropCalls(MockMe, "single_arg")
         mock.restore()
-        mock = director.CoreMock(MockMe, "many_positional")
+        mock = DropCalls(MockMe, "many_positional")
         mock.restore()
-        mock = director.CoreMock(MockMe, "single_kw")
+        mock = DropCalls(MockMe, "single_kw")
         mock.restore()
-        mock = director.CoreMock(MockMe, "both_args")
+        mock = DropCalls(MockMe, "both_args")
         mock.restore()
 
         calls = []
