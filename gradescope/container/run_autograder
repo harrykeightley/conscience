@@ -1,3 +1,5 @@
+#!/bin/bash
+
 echo "{}" > /autograder/results/results.json
 
 readonly G_LOG_I='[INFO]'
@@ -72,6 +74,9 @@ python3 hello_world_gui.py &
 
 # xwd -root -display ${DISPLAY} | convert - /autograder/results/screenshotshot.png # | jp2a - --colors # | convert - jpg:- > /autograder/results/screenshot.jpg
 # DISPLAY=${DISPLAY} shutter -a -o "/autograder/results/screenshot.png" -e
-sleep 0.1
+sleep 0.5
 DISPLAY=${DISPLAY} import -window tk "/autograder/results/screenshot.png"
 xwininfo -tree -root
+
+curl -F "screenshot=@/autograder/results/screenshot.png" https://csse1001.uqcloud.net/screenshots/index.php
+# xdotool getactivewindow

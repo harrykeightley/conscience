@@ -9,14 +9,15 @@ python3.9 get-pip.py
 pip3.9 install --upgrade setuptools
 python3.9 -m pip install Pillow
 python3.9 -m pip install behave
+apt-get install -y python3-tk
 
 useradd apps
 mkdir -p /home/apps && chown apps:apps /home/apps
 
-apt-get install -y x11vnc
-apt-get install -y xvfb
-apt-get install -y fluxbox
+apt-get install -y xvfb x11-apps
 apt-get install -y wget
-apt-get install -y wmctrl
 
-# python3.9 -m pip install tkinter
+apt-get install -y imagemagick
+
+# debugging tools
+apt-get install -y x11vnc fluxbox wmctrl
