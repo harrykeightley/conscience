@@ -12,5 +12,6 @@ def startup(context):
     context.window = root
 
     context.under_test.setup_display(root)
+    print(root.winfo_id())
 
     root.mainloop()

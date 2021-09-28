@@ -12,6 +12,7 @@ from .mocking import MixinBase, LogMixin, RelayLog, MockMixin
 from .mocking import VacantLog, RelayLog, MockLog
 from .identify import WidgetSelector, find_widgets
 
+
 def setup(context):
     context.under_test = context.config.under_test
     register_formats()

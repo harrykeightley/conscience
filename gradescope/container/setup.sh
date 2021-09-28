@@ -9,7 +9,7 @@ python3.9 get-pip.py
 pip3.9 install --upgrade setuptools
 python3.9 -m pip install Pillow
 python3.9 -m pip install behave
-apt-get install -y python3-tk
+apt-get install -y python3.9-tk
 
 useradd apps
 mkdir -p /home/apps && chown apps:apps /home/apps
