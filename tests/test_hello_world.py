@@ -8,24 +8,13 @@ logger = logging.getLogger("director")
 logger.addHandler(logging.StreamHandler(sys.stdout))
 
 import unittest
-from behave.__main__ import run_behave
-from behave.__main__ import Configuration
 
-import importlib.util
+from director import test
 
-
-def load_under_test(path):
-    spec = importlib.util.spec_from_file_location("under_test", path)
-    foo = importlib.util.module_from_spec(spec)
-    spec.loader.exec_module(foo)
-    return foo
 
 class TestHelloWorld(unittest.TestCase):
     def test_hello_world(self):
-        config = Configuration("tests/hello_world_tests")
-        config.steps_dir = "."
-        config.under_test = load_under_test("tests/hello_world/hello_world_gui.py")
-        run_behave(config)
+        test("tests/hello_world_tests", "tests/hello_world/hello_world_gui.py")
 
 
 if __name__ == '__main__':
