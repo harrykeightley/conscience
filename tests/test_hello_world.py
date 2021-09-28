@@ -22,7 +22,7 @@ def load_under_test(path):
 
 class TestHelloWorld(unittest.TestCase):
     def test_hello_world(self):
-        config = Configuration("tests/test_hello_world")
+        config = Configuration("tests/hello_world_tests")
         config.steps_dir = "."
         config.under_test = load_under_test("tests/hello_world/hello_world_gui.py")
         run_behave(config)
