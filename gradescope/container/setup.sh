@@ -21,3 +21,6 @@ apt-get install -y imagemagick
 
 # debugging tools
 apt-get install -y x11vnc fluxbox wmctrl
+
+# eventually
+# pip3.9 install --upgrade director
