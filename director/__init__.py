@@ -1,5 +1,6 @@
 name = "director"
 
+from os import chdir
 import logging
 logger = logging.getLogger(__package__)
 import importlib.util
@@ -25,10 +26,11 @@ def load_under_test(path):
     return foo
 
 
-def test(tests, target):
+def test(tests, target, working_directory="."):
     config = Configuration(tests)
     config.steps_dir = "."
     config.under_test = load_under_test(target)
+    chdir(working_directory)
     run_behave(config)
 
 

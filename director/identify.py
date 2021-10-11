@@ -6,6 +6,7 @@ Allows testing to occur in an environment where no knowledge
 is known about the implementation details of the GUI.
 """
 import tkinter as tk
+from typing import List
 from . import logger
 
 
@@ -17,7 +18,7 @@ def _widget_selector(parent, selector):
         yield from _widget_selector(child, selector)
 
 
-def find_widgets(selector, widget):
+def find_widgets(selector, widget) -> List[tk.Widget]:
     return list(_widget_selector(widget, selector))
 
 
