@@ -1,6 +1,6 @@
 #!/bin/bash
 
-echo "{\"score\": 100}" > /autograder/results/results.json
+# echo "{\"score\": 100}" > /autograder/results/results.json
 
 readonly G_LOG_I='[INFO]'
 readonly G_LOG_W='[WARN]'
@@ -72,7 +72,7 @@ launch_xvfb
 # cd /autograder/submission
 # python3 hello_world_gui.py &
 cd /autograder/source
-python3.9 testrunner.py
+python3.9 testrunner.py > /autograder/results/results.json
 
 # xwd -root -display ${DISPLAY} | convert - /autograder/results/screenshotshot.png # | jp2a - --colors # | convert - jpg:- > /autograder/results/screenshot.jpg
 # DISPLAY=${DISPLAY} shutter -a -o "/autograder/results/screenshot.png" -e
