@@ -1,7 +1,7 @@
 #!/bin/bash
 
-TEST=../tests/hello_world
-RESULTS=results/hello_world
+TEST=../tests/hacker
+RESULTS=results/hacker
 
 docker run --rm \
     -p 5900:5900 \
