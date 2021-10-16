@@ -2,6 +2,8 @@ name = "director"
 
 from os import chdir
 import logging
+import json
+import traceback
 
 logger = logging.getLogger(__package__)
 import importlib.util
@@ -32,7 +34,18 @@ def test(tests, target, working_directory=".", gradescope=False):
     extra_args = [] if not gradescope else ["--no-summary"]
     config = Configuration(command_args=[tests, "--no-source", "--no-timings"] + extra_args)
     config.steps_dir = "."
-    config.under_test = load_under_test(target)
+
+    try:
+        config.under_test = load_under_test(target)
+    except SyntaxError as e:
+        if not gradescope:
+            raise e
+        
+        print(json.dumps({
+            "score": 0,
+            "output": traceback.format_exc()
+        }))
+        return
 
     if gradescope:
         config.default_format = "gradescope"
@@ -40,7 +53,8 @@ def test(tests, target, working_directory=".", gradescope=False):
         config.setup_formats()
 
     chdir(working_directory)
-    run_behave(config)
+
+    run_behave(config)        
 
 
 __export__ = [MixinBase, LogMixin, RelayLog, MockMixin, VacantLog, RelayLog, MockLog, WidgetSelector, setup]

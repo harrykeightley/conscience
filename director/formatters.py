@@ -39,22 +39,21 @@ class GradescopeFormatter(Formatter):
 
     def result(self, step: Step):
         if step.status == Status.passed:
-            self._output += f"{step.name}\n"
+            self._output += f"{step.keyword} {step.name}\n"
             return
 
         self._passed = False
 
         if step.status == Status.skipped:
-            self._output += f"{step.name} (skipped)\n"
+            self._output += f"{step.keyword} {step.name} (skipped)\n"
             return
 
-        self._output += f"""{step.name}
-status: {step.status}
-output: {step.captured}
-{step.error_message}
-{step.exception}
-{step.exc_traceback}
-        """
+        self._output += f"""{step.keyword} {step.name}
+    status: {step.status}
+    {step.error_message}
+
+    output: {step.captured.output}
+"""
 
         
 
