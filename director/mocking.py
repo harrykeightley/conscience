@@ -56,11 +56,21 @@ class MixinBase(object):
                 mixin.setup(self)
 
     def _call(self, *args, **kwargs):
+        results = []
         for mixin in self.__class__.__mro__:
             if mixin == self.__class__:
                 continue
             if hasattr(mixin, "inject"):
-                mixin.inject(self, *args, **kwargs)
+                returned = mixin.inject(self, *args, **kwargs)
+                if returned is not None:
+                    results.append(returned)
+
+        if len(results) == 0:
+            return None
+        elif len(results) == 1:
+            return results[0]
+        else:
+            return results
     
     def restore(self):
         setattr(self._context, self._reference, self._original)
@@ -127,8 +137,18 @@ class MockMixin(MixinBase):
         self._mocks.append(mock)
         
     def inject(self, *args, **kwargs):
+        results = []
         for mock in self._mocks:
-            mock(*args, **kwargs)
+            returned = results.append(mock(*args, **kwargs))
+            if returned is not None:
+                results.append(returned)
+        
+        if len(results) == 0:
+            return None
+        elif len(results) == 1:
+            return results[0]
+        else:
+            return results
 
 
 class RelayMixin(MixinBase):
@@ -155,7 +175,7 @@ class RelayMixin(MixinBase):
     [(('life',), {'answer': 42}), ((), {})]
     """
     def inject(self, *args, **kwargs):
-        self._original(self, *args, **kwargs)
+        self._original(*args, **kwargs)
 
 
 # a couple of useful example mocking classes
@@ -170,3 +190,4 @@ class RelayLog(LogMixin, RelayMixin):
 
 class MockLog(LogMixin, MockMixin):
     pass
+

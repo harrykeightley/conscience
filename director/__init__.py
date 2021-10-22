@@ -12,7 +12,7 @@ from behave.__main__ import run_behave
 from behave.__main__ import Configuration
 
 from .formats import register_formats
-from .mocking import MixinBase, LogMixin, RelayLog, MockMixin
+from .mocking import MixinBase, LogMixin, RelayLog, MockMixin, RelayMixin
 from .mocking import VacantLog, RelayLog, MockLog
 from .identify import WidgetSelector, find_widgets
 from director.formatters import GradescopeFormatter
@@ -57,6 +57,6 @@ def test(tests, target, working_directory=".", gradescope=False):
     run_behave(config)        
 
 
-__export__ = [MixinBase, LogMixin, RelayLog, MockMixin, VacantLog, RelayLog, MockLog, WidgetSelector, setup]
+__export__ = [MixinBase, LogMixin, RelayMixin, MockMixin, VacantLog, RelayLog, MockLog, WidgetSelector, setup]
 __test__ = {obj.__name__ : obj for obj in __export__}
 __all__ = [cls.__name__ for cls in __export__] + ["logger", "find_widgets"]
