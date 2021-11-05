@@ -72,6 +72,8 @@ launch_xvfb
 cd /autograder/source
 python3.9 testrunner.py > /autograder/results/results.json
 
+python3.9 -m mikelint -c lint.yml -s /autograder/submission/a3.py
+
 # xwd -root -display ${DISPLAY} | convert - /autograder/results/screenshotshot.png # | jp2a - --colors # | convert - jpg:- > /autograder/results/screenshot.jpg
 # DISPLAY=${DISPLAY} shutter -a -o "/autograder/results/screenshot.png" -e
 # sleep 0.5

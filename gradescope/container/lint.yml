@@ -1,0 +1,12 @@
+Readability:
+    Identifier Names:
+        - NamingAnalyser
+AlgorithmicLogic:
+    Variable Scope:
+        - ScopeAnalyser.check_globals
+    Control Structures:
+        - StructureAnalyser.check_structure_complexity
+        - StructureAnalyser.check_structure_empty
+Object-Oriented Program Structure:
+    Encapsulation:
+        - EncapsulationAnalyser

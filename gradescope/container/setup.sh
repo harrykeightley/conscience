@@ -24,3 +24,5 @@ apt-get install -y x11vnc fluxbox wmctrl
 
 # eventually
 # pip3.9 install --upgrade director
+
+pip3.9 install mikelint
