@@ -4,6 +4,13 @@ from behave.model import Scenario, Step
 from behave.model_core import Status
 
 
+def parse_tag_value(scenario: Scenario, tag_name: str, default=None):
+    marks = filter(lambda tag: tag.startswith(tag_name), scenario.tags)
+    marks = map(lambda tag: tag[len(tag_name):].strip("()"), marks)
+    marks = filter(lambda tag: tag.isnumeric(), marks)
+
+    return next(marks, default)
+
 class GradescopeFormatter(Formatter):
     # def feature(self, feature):
     #     print(feature)
@@ -24,9 +31,11 @@ class GradescopeFormatter(Formatter):
         self._output = ""
 
     def _make_test(self):
+        weight = parse_tag_value(self._current_scenario, "weight", default=1)
+
         return {
-            "score": 1 if self._passed else 0,
-            "max_score": 1,
+            "score": weight if self._passed else 0,
+            "max_score": weight,
             "name": f"Scenario: {self._current_scenario.name}",
             "output": self._output,
             "visibility": "visible",
