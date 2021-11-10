@@ -153,11 +153,11 @@ class GradescopeFormatter(Formatter):
         
 
     def eof(self):
-        if self._current_scenario is not None:
-            self._tests.append(self._make_test())
         print()
 
     def close(self):
+        if self._current_scenario is not None:
+            self._tests.append(self._make_test())
         self.stream.write(json.dumps(self._results))
         super().close()
 
