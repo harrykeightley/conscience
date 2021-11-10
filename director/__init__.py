@@ -4,6 +4,7 @@ from os import chdir
 import logging
 import json
 import traceback
+from typing import TypedDict
 
 logger = logging.getLogger(__package__)
 import importlib.util
@@ -30,7 +31,13 @@ def load_under_test(path):
     return foo
 
 
-def test(tests, target, working_directory=".", gradescope=False):
+class GradeScopeMetadata(TypedDict):
+    student_categories: str
+    student_metadata: str
+
+
+def test(tests, target, working_directory=".", gradescope=False,
+         metadata: GradeScopeMetadata=None):
     extra_args = [] if not gradescope else ["--no-summary"]
     config = Configuration(command_args=[tests, "--no-source", "--no-timings"] + extra_args)
     config.steps_dir = "."
@@ -48,6 +55,12 @@ def test(tests, target, working_directory=".", gradescope=False):
         return
 
     if gradescope:
+        if metadata is not None:
+            config.student_categories = metadata["student_categories"]
+            config.student_metadata = metadata["student_metadata"]
+        else:
+            config.student_categories = None
+            config.student_metadata = None
         config.default_format = "gradescope"
         config.more_formatters = {"gradescope": GradescopeFormatter}
         config.setup_formats()

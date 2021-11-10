@@ -1,15 +1,58 @@
 import json
+import csv
+from typing import List, Optional, TypedDict
+from enum import Enum
 from behave.formatter.base import Formatter
 from behave.model import Scenario, Step
 from behave.model_core import Status
 
 
-def parse_tag_value(scenario: Scenario, tag_name: str, default=None):
-    marks = filter(lambda tag: tag.startswith(tag_name), scenario.tags)
-    marks = map(lambda tag: tag[len(tag_name):].strip("()"), marks)
-    marks = filter(lambda tag: tag.isnumeric(), marks)
+# type hints borrowed from MikeLint
+class GradescopeAssignmentMetadata(TypedDict):
+    due_date: str
+    group_size: Optional[int]
+    group_submission: bool
+    id: int
+    course_id: int
+    late_due_date: Optional[str]
+    release_data: str
+    title: str
+    total_point: str
 
-    return next(marks, default)
+
+class GradescopeSubmissionMethod(str, Enum):
+    github = "GitHub"
+    upload = "upload"
+    bitbucket = "Bitbucket"
+
+
+class GradescopeUser(TypedDict):
+    email: str
+    id: int
+    name: str
+
+
+class GradescopeSubmissionMetadata(TypedDict):
+    id: int
+    created_at: str
+    assignment: GradescopeAssignmentMetadata
+    submission_method: GradescopeSubmissionMethod
+    users: List[GradescopeUser]
+
+
+def parse_tag_value(scenario: Scenario, tag_name: str, default=None):
+    tags = filter(lambda tag: tag.startswith(tag_name), scenario.tags)
+    tags = map(lambda tag: tag[len(tag_name):].strip("()"), tags)
+    tags = filter(lambda tag: tag.lstrip("-").isdigit(), tags)
+
+    return int(next(tags, default))
+
+
+def has_tag(scenario: Scenario, tag_name: str) -> bool:
+    tags = filter(lambda tag: tag == tag_name, scenario.tags)
+    
+    return bool(next(tags, None))
+
 
 class GradescopeFormatter(Formatter):
     # def feature(self, feature):
@@ -23,7 +66,43 @@ class GradescopeFormatter(Formatter):
             "tests": self._tests
         }
 
+        self._determine_student_type()
         self.reset(None)
+
+    def _determine_student_type(self):
+        self.type = None
+
+        if self.config.student_metadata is None:
+            return
+
+        if self.config.student_categories is None:
+            return
+
+        with open(self.config.student_metadata) as f:
+            metadata: GradescopeSubmissionMetadata = json.load(f)
+
+        submission_email = metadata["users"][0]["email"]
+        with open(self.config.student_categories) as f:
+            category_data = csv.DictReader(f)
+            for entry in category_data:
+                student_email = entry['email']
+                if submission_email != student_email:
+                    continue
+
+                self.type = entry
+        
+        if self.type is None:
+            log = f"Unable to find submission metadata for {submission_email}"
+        else:
+            log = f"Submission metadata\n{self.type}"
+
+        self._tests.append({
+            "score": 0,
+            "max_score": 0,
+            "name": f"Metadata Debug",
+            "output": log,
+            "visibility": "hidden",
+        })
 
     def reset(self, scenario):
         self._current_scenario: Scenario = scenario
@@ -32,13 +111,20 @@ class GradescopeFormatter(Formatter):
 
     def _make_test(self):
         weight = parse_tag_value(self._current_scenario, "weight", default=1)
+        visible = has_tag(self._current_scenario, "visible")
+        if self.type is not None:
+            postgrad = self.type.get("postgrad", False)
+            if postgrad:
+                adjustment = parse_tag_value(self._current_scenario, "postgradAdjust", 0)
+                weight += adjustment
+            
 
         return {
             "score": weight if self._passed else 0,
             "max_score": weight,
             "name": f"Scenario: {self._current_scenario.name}",
             "output": self._output,
-            "visibility": "visible",
+            "visibility": "visible" if visible else "after_published",
         }
     
     def scenario(self, scenario):

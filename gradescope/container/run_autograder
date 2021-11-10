@@ -69,6 +69,11 @@ launch_xvfb
 # launch_window_manager
 # run_vnc_server &
 
+# local docker testing
+if test -f /autograder/metadata/submission_metadata.json; then
+    cp /autograder/metadata/submission_metadata.json /autograder/submission_metadata.json
+fi
+
 cd /autograder/source
 python3.9 testrunner.py > /autograder/results/results.json
 
