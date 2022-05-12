@@ -27,9 +27,9 @@ class WidgetSelector:
     def aggregate(*selectors):
         def cb(widget):
             for selector in selectors:
-                if selector(widget):
-                    return True
-            return False
+                if not selector(widget):
+                    return False
+            return True
 
         return cb
 
@@ -54,6 +54,16 @@ class WidgetSelector:
                 return False
         
         return f
+
+    @staticmethod
+    def get_canvas_text(widget, expected):
+        found = []
+        for item in widget.find_all():
+            config = widget.itemconfig(item)
+            if "text" in config:
+                if config["text"][4] == expected:
+                    found.append(item)
+        return found
 
     @staticmethod
     def by_label(expected):

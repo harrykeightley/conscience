@@ -117,12 +117,11 @@ class GradescopeFormatter(Formatter):
             if postgrad:
                 adjustment = parse_tag_value(self._current_scenario, "postgradAdjust", 0)
                 weight += adjustment
-            
-
+        
         return {
             "score": weight if self._passed else 0,
             "max_score": weight,
-            "name": f"Scenario: {self._current_scenario.name}",
+            "name": f"Feature: {self._current_scenario.feature.name} - Scenario: {self._current_scenario.name}",
             "output": self._output,
             "visibility": "visible" if visible else "after_published",
         }
@@ -153,7 +152,7 @@ class GradescopeFormatter(Formatter):
         
 
     def eof(self):
-        print()
+        pass
 
     def close(self):
         if self._current_scenario is not None:

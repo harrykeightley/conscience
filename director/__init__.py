@@ -1,5 +1,6 @@
 name = "director"
 
+from io import StringIO
 from os import chdir
 import logging
 import json
@@ -7,10 +8,13 @@ import traceback
 from typing import TypedDict
 
 logger = logging.getLogger(__package__)
+debug = logging.getLogger(f"{__package__}.debug")
+
 import importlib.util
 
 from behave.__main__ import run_behave
 from behave.__main__ import Configuration
+from behave.formatter.base import StreamOpener
 
 from .formats import register_formats
 from .mocking import MixinBase, LogMixin, RelayLog, MockMixin, RelayMixin
@@ -21,6 +25,7 @@ from director.formatters import GradescopeFormatter
 
 def setup(context):
     context.under_test = context.config.under_test
+    context.suite = context.config.suite
     register_formats()
 
 
@@ -37,22 +42,30 @@ class GradeScopeMetadata(TypedDict):
 
 
 def test(tests, target, working_directory=".", gradescope=False,
-         metadata: GradeScopeMetadata=None):
+         metadata: GradeScopeMetadata=None, suite=None):
     extra_args = [] if not gradescope else ["--no-summary"]
-    config = Configuration(command_args=[tests, "--no-source", "--no-timings"] + extra_args)
+    config = Configuration(command_args=["--no-source", "--no-timings"] + extra_args)
     config.steps_dir = "."
+    config.paths = tests
+    config.environment_file = "../environment.py"
+
+    config.log_capture = False
+
+    output_stream = StringIO()
+    config.outputs = [StreamOpener(stream=output_stream)]
+
+    config.suite = suite
 
     try:
         config.under_test = load_under_test(target)
-    except SyntaxError as e:
+    except Exception as e:
         if not gradescope:
             raise e
         
-        print(json.dumps({
+        return {
             "score": 0,
             "output": traceback.format_exc()
-        }))
-        return
+        }
 
     if gradescope:
         if metadata is not None:
@@ -67,7 +80,17 @@ def test(tests, target, working_directory=".", gradescope=False,
 
     chdir(working_directory)
 
-    run_behave(config)        
+    run_behave(config)
+
+    try:
+        output_stream.seek(0)
+        return json.load(output_stream)
+    except json.JSONDecodeError:
+        output_stream.seek(0)
+        return {
+            "score": 0,
+            "output": output_stream.read()
+        }
 
 
 __export__ = [MixinBase, LogMixin, RelayMixin, MockMixin, VacantLog, RelayLog, MockLog, WidgetSelector, setup]
