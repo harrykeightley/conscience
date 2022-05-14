@@ -105,6 +105,19 @@ class GradescopeFormatter(Formatter):
             "visibility": "hidden",
         })
 
+    def _format_test_name(self, scenario: Scenario):
+        return f"Feature: {scenario.feature.name} - Scenario: {scenario.name}"
+
+    def _format_step_name(self, step: Step):
+        status = {Status.passed.value: "✅", Status.failed.value: "❌", Status.skipped.value: "⏭ "}.get(step.status.value, "")
+        prepend = {Status.skipped.value: " (skipped)"}.get(step.status.value, "")
+        
+        result = f"{status} {step.keyword} {step.name}{prepend}"
+        if step.text:
+            result += f"\n{step.text}"
+
+        return result
+
     def reset(self, scenario):
         self._current_scenario: Scenario = scenario
         self._passed = True
@@ -124,15 +137,15 @@ class GradescopeFormatter(Formatter):
             return {
                 "score": 0,
                 "max_score": weight,
-                "name": f"Feature: {self._current_scenario.feature.name} - Scenario: {self._current_scenario.name} (skipped)",
-                "output": reason,
-                "visibility": visible and "visible" or "hidden",
+                "name": self._format_test_name(self._current_scenario),
+                "output": f"⏭  {reason}",
+                "visibility": "visible" if visible else "after_published",
             }
         
         return {
             "score": weight if self._passed else 0,
             "max_score": weight,
-            "name": f"Feature: {self._current_scenario.feature.name} - Scenario: {self._current_scenario.name}",
+            "name": self._format_test_name(self._current_scenario),
             "output": self._output,
             "visibility": "visible" if visible else "after_published",
         }
@@ -144,20 +157,19 @@ class GradescopeFormatter(Formatter):
 
     def result(self, step: Step):
         if step.status == Status.passed:
-            self._output += f"{step.keyword} {step.name}\n"
+            self._output += f"{self._format_step_name(step)}\n"
             return
 
         self._passed = False
 
         if step.status == Status.skipped:
-            self._output += f"{step.keyword} {step.name} (skipped)\n"
+            self._output += f"{self._format_step_name(step)}\n"
             return
 
-        self._output += f"""{step.keyword} {step.name}
-    status: {step.status}
-    {step.error_message}
 
-    output: {step.captured.output}
+        raw_output = f"output: {step.captured.output}\n" if len(step.captured.output.strip()) > 0 else ""
+        self._output += f"""{self._format_step_name(step)}
+    {step.error_message}
 """
 
         
@@ -168,7 +180,7 @@ class GradescopeFormatter(Formatter):
     def close(self):
         if self._current_scenario is not None:
             self._tests.append(self._make_test())
-        self.stream.write(json.dumps(self._results))
+        self.stream.write(json.dumps(self._results, ensure_ascii=False).encode("utf8"))
         super().close()
 
     # def step(self, step):

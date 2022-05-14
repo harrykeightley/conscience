@@ -1,6 +1,6 @@
 name = "director"
 
-from io import StringIO
+from io import BytesIO, StringIO
 from os import chdir
 import logging
 import json
@@ -51,7 +51,7 @@ def test(tests, target, working_directory=".", gradescope=False,
 
     config.log_capture = False
 
-    output_stream = StringIO()
+    output_stream = BytesIO()
     config.outputs = [StreamOpener(stream=output_stream)]
 
     config.suite = suite

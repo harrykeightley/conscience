@@ -1,9 +1,13 @@
+from difflib import ndiff
 from behave import *
 from .identify import *
 from .formats import RelativePosition, register_formats
 
 register_formats()
 
+
+def assertEquals(expected, actual):
+    assert actual == expected, "\n" + "".join(ndiff(actual.splitlines(keepends=True), expected.splitlines(keepends=True)))
 
 @then("I see text displaying, roughly, \"{text:Text}\"")
 def rough_text(context, text):
