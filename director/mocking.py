@@ -99,6 +99,7 @@ class LogMixin(MixinBase):
     """
     def setup(self) -> None:
         self._records = []
+        self._records_with_self = []
 
     @property
     def logs(self):
@@ -106,6 +107,7 @@ class LogMixin(MixinBase):
 
     def inject(self, *args, **kwargs):
         self._records.append((args, kwargs))
+        self._records_with_self.append((self, args, kwargs))
 
 
 class MockMixin(MixinBase):

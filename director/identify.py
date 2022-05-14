@@ -94,6 +94,12 @@ class WidgetSelector:
         return f
 
     @staticmethod
+    def by_class_name(expected):
+        def f(widget):
+            return widget.__class__.__name__ == expected
+        return f
+
+    @staticmethod
     def is_leaf():
         def f(widget):
             return not widget.children
