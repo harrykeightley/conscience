@@ -1,5 +1,6 @@
 import json
 import csv
+import re
 from typing import List, Optional, TypedDict
 from enum import Enum
 from behave.formatter.base import Formatter
@@ -117,6 +118,16 @@ class GradescopeFormatter(Formatter):
             if postgrad:
                 adjustment = parse_tag_value(self._current_scenario, "postgradAdjust", 0)
                 weight += adjustment
+
+        if self._current_scenario.status == Status.skipped or self._current_scenario.feature.status == Status.skipped:
+            reason = self._current_scenario.skip_reason or self._current_scenario.feature.skip_reason
+            return {
+                "score": 0,
+                "max_score": weight,
+                "name": f"Feature: {self._current_scenario.feature.name} - Scenario: {self._current_scenario.name} (skipped)",
+                "output": reason,
+                "visibility": visible and "visible" or "hidden",
+            }
         
         return {
             "score": weight if self._passed else 0,
@@ -126,7 +137,7 @@ class GradescopeFormatter(Formatter):
             "visibility": "visible" if visible else "after_published",
         }
     
-    def scenario(self, scenario):
+    def scenario(self, scenario: Scenario):
         if self._current_scenario is not None:
             self._tests.append(self._make_test())
         self.reset(scenario)
