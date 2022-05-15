@@ -44,9 +44,9 @@ class GradescopeSubmissionMetadata(TypedDict):
 def parse_tag_value(scenario: Scenario, tag_name: str, default=None):
     tags = filter(lambda tag: tag.startswith(tag_name), scenario.tags)
     tags = map(lambda tag: tag[len(tag_name):].strip("()"), tags)
-    tags = filter(lambda tag: tag.lstrip("-").isdigit(), tags)
+    tags = filter(lambda tag: tag.lstrip("-").replace('.','',1).isdigit(), tags)
 
-    return int(next(tags, default))
+    return float(next(tags, default))
 
 
 def has_tag(scenario: Scenario, tag_name: str) -> bool:
@@ -106,7 +106,7 @@ class GradescopeFormatter(Formatter):
         })
 
     def _format_test_name(self, scenario: Scenario):
-        return f"Feature: {scenario.feature.name} - Scenario: {scenario.name}"
+        return f"{scenario.name} ({scenario.feature.name})"
 
     def _format_step_name(self, step: Step):
         status = {Status.passed.value: "✅", Status.failed.value: "❌", Status.skipped.value: "⏭ "}.get(step.status.value, "")
@@ -114,7 +114,8 @@ class GradescopeFormatter(Formatter):
         
         result = f"{status} {step.keyword} {step.name}{prepend}"
         if step.text:
-            result += f"\n{step.text}"
+            indented_text = "\n".join(f"   {line}" for line in step.text.split("\n"))
+            result += f"\n{indented_text}"
 
         return result
 
