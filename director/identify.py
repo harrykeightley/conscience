@@ -66,6 +66,19 @@ class WidgetSelector:
         return found
 
     @staticmethod
+    def get_canvas_image(registry, widget, expected):
+        found = []
+        for item in widget.find_all():
+            config = widget.itemconfig(item)
+            if "image" in config:
+                image_id = config["image"][4]
+                if image_id in registry:
+                    image_type = registry[image_id]
+                    if image_type == expected:
+                        found.append(item)
+        return found
+
+    @staticmethod
     def by_label(expected):
         def f(widget):
             try:

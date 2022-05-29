@@ -19,15 +19,31 @@ warnings.Widget_destroy = "you should not use the .destroy method - gracefully r
 """
 import random
 import tkinter as tk
+import traceback
 
+from .common import logger
+
+
+def warn(message):
+    def inner(*args, **kwargs):
+        stack = traceback.format_stack()
+        stack = filter(lambda log: "a3.py" in log, stack)
+        logger.warn("".join(stack))
+        logger.warn(message)
+
+    return inner
 
 class DirectorSuite:
     def __init__(self, seed=None):
         self.seed = seed
         self._overwrites = {}
+        self._warnings = []
 
     def overwrite(self, variable, value):
         self._overwrites[variable] = value
+    
+    def warn_on(self, clz, method, message):
+        self._warnings.append((clz, method, message))
     
     def start(self, context):
         if self.seed is not None:
@@ -35,5 +51,8 @@ class DirectorSuite:
 
         for variable, value in self._overwrites.items():
             setattr(context.under_test, variable, value)
+
+        for clz, method, message in self._warnings:
+            setattr(clz, method, warn(message))
 
         self.window = tk.Tk()
