@@ -83,12 +83,24 @@ class WidgetSelector:
         def f(widget):
             try:
                 actual = widget.cget("label").lower()
-                print(actual)
                 return expected in actual
             except tk.TclError:
                 return False
 
         return f
+
+    @staticmethod
+    def by_image(registry, expected):
+        def f(widget):
+            try:
+                actual = widget.cget("image")
+                if actual in registry:
+                    return registry[actual] == expected
+            except tk.TclError:
+                return False
+
+        return f
+
 
     @staticmethod
     def has_text():
