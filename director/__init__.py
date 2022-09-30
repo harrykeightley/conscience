@@ -22,6 +22,7 @@ from .mocking import VacantLog, RelayLog, MockLog
 from .identify import WidgetSelector, find_widgets
 from director.formatters import GradescopeFormatter
 
+from .design import *
 
 def setup(context):
     context.under_test = context.config.under_test

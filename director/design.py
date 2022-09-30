@@ -45,6 +45,18 @@ def method_defined(context, clazz, method, params):
 
     parameters = inspect.signature(method_obj).parameters
     positional_parameters = [param for param in parameters if parameters[param].kind != inspect.Parameter.VAR_KEYWORD]
-    num_args = len(positional_parameters) - 1 # ignore self
+    num_args = len(positional_parameters)
     assert num_args == params, f"{clazz}.{method} does not have {params} positional parameters, it has {num_args} ({positional_parameters})"
 
+@given('{clazz:w}.{method:w} with {params:d} positional parameters and {kwargs:d} keyword parameters is defined')
+def method_defined_kw(context, clazz, method, params, kwargs):
+    method_defined(context, clazz, method, params)
+
+    clazz_obj = getattr(context.under_test, clazz)
+    method_obj = getattr(clazz_obj, method)
+
+    parameters = inspect.signature(method_obj).parameters
+    keyword_parameters = [param for param in parameters if parameters[param].kind == inspect.Parameter.VAR_KEYWORD]
+    num_kwargs = len(keyword_parameters)
+
+    assert num_kwargs == kwargs, f"{clazz}.{method} does not have {kwargs} keyword parameters, it has {num_kwargs} ({keyword_parameters})"
