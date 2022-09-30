@@ -52,7 +52,7 @@ def test(tests, target, working_directory=".", gradescope=False,
     config.log_capture = False
 
     output_stream = BytesIO()
-    config.outputs = [StreamOpener(stream=output_stream)]
+    config.outputs = [] if not gradescope else [StreamOpener(stream=output_stream)]
 
     config.suite = suite
 
@@ -81,6 +81,9 @@ def test(tests, target, working_directory=".", gradescope=False,
     chdir(working_directory)
 
     run_behave(config)
+
+    if not gradescope:
+        return {}
 
     try:
         output_stream.seek(0)
