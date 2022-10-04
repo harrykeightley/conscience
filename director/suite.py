@@ -38,6 +38,10 @@ class DirectorSuite:
         self.seed = seed
         self._overwrites = {}
         self._warnings = []
+        self._features = []
+
+    def enable(self, feature):
+        self._features.append(feature)
 
     def overwrite(self, variable, value):
         self._overwrites[variable] = value
@@ -55,4 +59,9 @@ class DirectorSuite:
         for clz, method, message in self._warnings:
             setattr(clz, method, warn(message))
 
+        for feature in self._features:
+            feature.on_start(context, self)
+       
         self.window = tk.Tk()
+ 
+
