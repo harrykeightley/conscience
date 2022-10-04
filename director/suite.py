@@ -49,6 +49,10 @@ class DirectorSuite:
     def warn_on(self, clz, method, message):
         self._warnings.append((clz, method, message))
     
+    def load(self):
+        for feature in self._features:
+            feature.on_load(self)
+    
     def start(self, context):
         if self.seed is not None:
             random.seed(self.seed)

@@ -22,7 +22,6 @@ from .mocking import VacantLog, RelayLog, MockLog
 from .identify import WidgetSelector, find_widgets
 from director.formatters import GradescopeFormatter
 
-from .design import *
 from .window import *
 
 def setup(context):
@@ -82,6 +81,7 @@ def test(tests, target, working_directory=".", gradescope=False,
 
     chdir(working_directory)
 
+    suite.load()
     run_behave(config)
 
     if not gradescope:

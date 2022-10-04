@@ -1,11 +1,20 @@
 import tkinter as tk
 from behave import *
 from . import *
-from .keyboard import Events, press
+from .features.keyboard import Events, press
+from .features.design import load_design_tests
 
 class Feature:
+    def on_load(self, suite):
+        pass
+
     def on_start(self, context, suite):
         pass
+
+
+class CodeDesign(Feature):
+    def on_load(self, suite):
+        load_design_tests()
 
 
 class PreventMainloop(Feature):
@@ -18,10 +27,7 @@ class TrackKeypresses(Feature):
         TrackKeypresses._enabled = True
         context.key_binds = VacantLog(tk.Tk, "bind")
 
-    @when("I press {key}")
-    @staticmethod
-    def press_key(context, key):
-        if not hasattr(TrackKeypresses, "_enabled"):
-            raise Exception("TrackKeypresses feature has not been enabled")
-        event = getattr(Events, key.upper())
-        press(context, event)
+        @when("I press {key}")
+        def press_key(context, key):
+            event = getattr(Events, key.upper())
+            press(context, event)
