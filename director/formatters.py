@@ -111,7 +111,7 @@ class GradescopeFormatter(Formatter):
     def _format_step_name(self, step: Step):
         status = {Status.passed.value: "✅", Status.failed.value: "❌", Status.skipped.value: "⏭ "}.get(step.status.value, "")
         prepend = {Status.skipped.value: " (skipped)"}.get(step.status.value, "")
-        
+
         result = f"{status} {step.keyword} {step.name}{prepend}"
         if step.text:
             indented_text = "\n".join(f"   {line}" for line in step.text.split("\n"))
@@ -156,6 +156,13 @@ class GradescopeFormatter(Formatter):
             self._tests.append(self._make_test())
         self.reset(scenario)
 
+    def help_tags(self, scenario: Scenario):
+        helpers = []
+        for tag in scenario.tags:
+            if tag.startswith("help"):
+                helpers.append(tag[5:].strip("()"))
+        return helpers
+
     def result(self, step: Step):
         if step.status == Status.passed:
             self._output += f"{self._format_step_name(step)}\n"
@@ -172,7 +179,11 @@ class GradescopeFormatter(Formatter):
         self._output += f"""{self._format_step_name(step)}
     {step.error_message}
 """
-
+        help_tags = self.help_tags(self._current_scenario)
+        if len(help_tags) > 0:
+            self._output += f"    Try these EdStem posts:\n"
+            for tag in help_tags:
+                self._output += f"        {tag}\n"
         
 
     def eof(self):

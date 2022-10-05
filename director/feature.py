@@ -4,9 +4,12 @@ from tkinter.commondialog import Dialog
 from tkinter.simpledialog import _QueryDialog
 from behave import *
 from . import *
+from .mocking import copy_function
 from .features.keyboard import Events, press
 from .features.design import load_design_tests
 from .features.after import AfterSimulator
+from .features.menu import load_file_menu_tests
+
 
 class Feature:
     def on_load(self, suite):
@@ -106,4 +109,19 @@ class MockMessagebox(Feature):
                     break
             
             assert found, f"did not find messagebox with text {text} in {potential_calls}"
+
+
+class MockMenu(Feature):
+    def on_start(self, context, suite):
+        old_config = copy_function(tk.Tk.config)
+        context.menus = []
+        def inject_config(self, **kwargs):
+            old_config(self, **kwargs)
+            if "menu" in kwargs:
+                context.menus.append(kwargs["menu"])
+
+        setattr(tk.Tk, "config", inject_config)
+
+        load_file_menu_tests()
+
 
