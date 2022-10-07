@@ -125,3 +125,18 @@ class MockMenu(Feature):
         load_file_menu_tests()
 
 
+class MockDestroy(Feature):
+    old_destroy = copy_function(tk.Tk.destroy)
+
+    def on_start(self, context, suite):
+        context.destroyed = []
+        def inject_destroy(self):
+            MockDestroy.old_destroy(self)
+            context.destroyed.append(self)
+        setattr(tk.Tk, "destroy", inject_destroy)
+
+        @then("the window should be closed")
+        def window_closed(context):
+            assert len(context.destroyed) == 1,\
+                    f"found {len(context.destroyed)} calls to destroy (needed 1): {context.destroyed}"
+
