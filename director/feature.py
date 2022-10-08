@@ -172,3 +172,7 @@ class MockDestroy(Feature):
             assert len(context.destroyed) == 1,\
                     f"found {len(context.destroyed)} calls to destroy (needed 1): {context.destroyed}"
 
+        @then("the window should not be closed")
+        def window_not_closed(context):
+            assert len(context.destroyed) == 0,\
+                   f"found {len(context.destroyed)} calls to destroy (needed 0): {context.destroyed}"
