@@ -79,6 +79,38 @@ class MockMessagebox(Feature):
                 setattr(self, "getresult", lambda self: answer)
             setattr(_QueryDialog, "__init__", inject_query_dialog)
 
+        @when("I get prompted I will answer in the affirmative")
+        def set_response_positive(context):
+            old_messagebox = copy_function(messagebox._show)
+            def inject_messagebox(title=None, message=None, _icon=None, _type=None, **options):
+                return "yes"
+            setattr(messagebox, "_show", inject_messagebox)
+
+            old_dialog = copy_function(Dialog.show)
+            def inject_dialog(self, **options):
+                return "yes"
+            setattr(Dialog, "show", inject_dialog)
+
+            def inject_query_dialog(self, *args, **kwargs):
+                setattr(self, "getresult", lambda self: "yes")
+            setattr(_QueryDialog, "__init__", inject_query_dialog)
+
+        @when("I get prompted I will answer in the negative")
+        def set_response_negative(context):
+            old_messagebox = copy_function(messagebox._show)
+            def inject_messagebox(title=None, message=None, _icon=None, _type=None, **options):
+                return "no"
+            setattr(messagebox, "_show", inject_messagebox)
+
+            old_dialog = copy_function(Dialog.show)
+            def inject_dialog(self, **options):
+                return "no"
+            setattr(Dialog, "show", inject_dialog)
+
+            def inject_query_dialog(self, *args, **kwargs):
+                setattr(self, "getresult", lambda self: "no")
+            setattr(_QueryDialog, "__init__", inject_query_dialog)
+
     def on_start(self, context, suite):
         context.message_boxes = VacantLog(messagebox, "_show")
         context.dialog = VacantLog(Dialog, "show")
