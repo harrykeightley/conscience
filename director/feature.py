@@ -36,6 +36,9 @@ class TrackKeypresses(Feature):
     def on_start(self, context, suite):
         TrackKeypresses._enabled = True
         context.key_binds = VacantLog(tk.Tk, "bind")
+        
+        bind_all_mock = MockLog(tk.Tk, "bind_all")
+        bind_all_mock.register(lambda *args, **kwargs: print("bind_all is not supported in all Tkinter distributions. Please use bind instead."))
 
         @when("I press {key}")
         def press_key(context, key):
