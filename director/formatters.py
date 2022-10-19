@@ -184,7 +184,10 @@ class GradescopeFormatter(Formatter):
             self._output += f"    Try these EdStem posts:\n"
             for tag in help_tags:
                 self._output += f"        {tag}\n"
-        
+       
+        message = self.config.suite.on_fail(self._current_scenario, step)
+        if message is not None:
+            self._output += f"    {message}\n"
 
     def eof(self):
         pass

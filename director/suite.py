@@ -52,6 +52,15 @@ class DirectorSuite:
     def load(self):
         for feature in self._features:
             feature.on_load(self)
+
+    def on_fail(self, scenario, step):
+        message = ""
+        for feature in self._features:
+            feature_message = feature.failure_message(scenario, step)
+            if feature_message is not None:
+                message += feature_message
+
+        return message or None
     
     def start(self, context):
         if self.seed is not None:

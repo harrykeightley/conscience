@@ -18,6 +18,9 @@ class Feature:
     def on_start(self, context, suite):
         pass
 
+    def failure_message(self, scenario, step):
+        pass
+
 
 class CodeDesign(Feature):
     def on_load(self, suite):
@@ -176,3 +179,14 @@ class MockDestroy(Feature):
         def window_not_closed(context):
             assert len(context.destroyed) == 0,\
                    f"found {len(context.destroyed)} calls to destroy (needed 0): {context.destroyed}"
+
+
+class ExceptionURL(Feature):
+    def __init__(self, exception, url):
+        self._exception = exception
+        self._url = url
+
+    def failure_message(self, scenario, step):
+        if self._exception in step.error_message:
+            return f"{self._exception} was raised\nThe following EdStem post may be helpful:\n\t{self._url}"
+
