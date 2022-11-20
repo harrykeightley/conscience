@@ -30,6 +30,7 @@ class CodeDesign(Feature):
 class PreventMainloop(Feature):
     def on_start(self, context, suite):
         VacantLog(tk.Tk, "mainloop")
+        VacantLog(tk.Widget, "mainloop")
 
 
 class TrackKeypresses(Feature):
