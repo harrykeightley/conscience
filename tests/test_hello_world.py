@@ -1,8 +1,10 @@
 """
 Test a very simple GUI.
 """
+
 import sys
 import logging
+
 logger = logging.getLogger("director")
 # logger.setLevel(logging.DEBUG)
 logger.addHandler(logging.StreamHandler(sys.stdout))
@@ -17,5 +19,5 @@ class TestHelloWorld(unittest.TestCase):
         test("tests/hello_world_tests", "tests/hello_world/hello_world_gui.py")
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     unittest.main()

@@ -1,6 +1,7 @@
 """
 Ensure that mocking correctly captures subsequent calls to methods.
 """
+
 from director.mocking import MixinBase
 import unittest
 import traceback
@@ -9,7 +10,7 @@ import traceback
 class MockMe:
     def __init__(self, on_call):
         self.on_call = on_call
-    
+
     def no_args(self):
         self.on_call()
 
@@ -42,7 +43,9 @@ class TestCoreMock(unittest.TestCase):
 
         def fail_if_called(*args, **kwargs):
             traceback.print_stack(f=None, limit=None, file=None)
-            self.fail(f"a call to MockMe was made bypassing mocking, args: {args} kwargs: {kwargs}")
+            self.fail(
+                f"a call to MockMe was made bypassing mocking, args: {args} kwargs: {kwargs}"
+            )
 
         mock_me = MockMe(fail_if_called)
         mock_me.no_args()
@@ -71,6 +74,7 @@ class TestCoreMock(unittest.TestCase):
         mock.restore()
 
         calls = []
+
         def record_call(*args, **kwargs):
             calls.append((args, kwargs))
 
@@ -84,11 +88,9 @@ class TestCoreMock(unittest.TestCase):
         self.assertEqual(calls[0], (tuple(), {}))
         self.assertEqual(calls[1], (("p0",), {}))
         self.assertEqual(calls[2], (("p0", "p1", "p2", "p3"), {}))
-        self.assertEqual(calls[3], ((None,), {})) # weird behaviour
+        self.assertEqual(calls[3], ((None,), {}))  # weird behaviour
         self.assertEqual(calls[4], (("p0", "p1"), {"kw0": None, "kw1": None}))
 
 
-
-
-if __name__ == '__main__':
+if __name__ == "__main__":
     unittest.main()

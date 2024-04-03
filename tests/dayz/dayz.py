@@ -2,7 +2,7 @@
 
 ##---- Configurations ----##
 TASK = 2
-MAP_FILE = 'test_data/maps/basic5.txt'
+MAP_FILE = "test_data/maps/basic5.txt"
 
 ##---- Assignment 2 Constants ----##
 # Characters that represent entities in a grid.
@@ -44,15 +44,15 @@ NO_WEAPON_MESSAGE = "You are not holding anything to fire!"
 
 ##---- GUI Constants ----##
 # Task 1 Constants
-TITLE = 'EndOfDayz'
+TITLE = "EndOfDayz"
 MAP_WIDTH = MAP_HEIGHT = 400
 MAX_ITEMS = 10
 INVENTORY_WIDTH = 200
-DARK_PURPLE = ACCENT_COLOUR = '#371D33'
-DARKEST_PURPLE = '#371D33'
-LIGHT_BROWN = MAP_BACKGROUND_COLOUR = '#B5B28F'
-LIGHT_GREEN = '#B8D58E'
-LIGHT_PURPLE = '#E5E1EF'
+DARK_PURPLE = ACCENT_COLOUR = "#371D33"
+DARKEST_PURPLE = "#371D33"
+LIGHT_BROWN = MAP_BACKGROUND_COLOUR = "#B5B28F"
+LIGHT_GREEN = "#B8D58E"
+LIGHT_PURPLE = "#E5E1EF"
 CELL_SIZE = 50
 
 ENTITY_COLOURS = {
@@ -61,36 +61,33 @@ ENTITY_COLOURS = {
     ZOMBIE: LIGHT_GREEN,
     GARLIC: LIGHT_PURPLE,
     TRACKING_ZOMBIE: LIGHT_GREEN,
-    CROSSBOW: LIGHT_PURPLE
+    CROSSBOW: LIGHT_PURPLE,
 }
 
 # Task 2 Constants
-BACK_GROUND = 'B'
-ARROW = 'A'
+BACK_GROUND = "B"
+ARROW = "A"
 IMAGES = {
-    PLAYER: 'images/hero.png',
-    HOSPITAL: 'images/hospital.png',
-    ZOMBIE: 'images/zombie.png',
-    GARLIC: 'images/garlic.png',
-    TRACKING_ZOMBIE: 'images/zombie.png',
-    CROSSBOW: 'images/crossbow.png',
-    BACK_GROUND: 'images/tileable_background.png',
-    ARROW: 'images/arrow.png',
+    PLAYER: "images/hero.png",
+    HOSPITAL: "images/hospital.png",
+    ZOMBIE: "images/zombie.png",
+    GARLIC: "images/garlic.png",
+    TRACKING_ZOMBIE: "images/zombie.png",
+    CROSSBOW: "images/crossbow.png",
+    BACK_GROUND: "images/tileable_background.png",
+    ARROW: "images/arrow.png",
 }
 
 BANNER_HEIGHT = 100
-ARROWS_TO_DIRECTIONS = {'Left': LEFT, 'Right': RIGHT, 'Up': UP, 'Down': DOWN}
+ARROWS_TO_DIRECTIONS = {"Left": LEFT, "Right": RIGHT, "Up": UP, "Down": DOWN}
 
-HIGH_SCORES_FILE = 'high_scores.txt'
+HIGH_SCORES_FILE = "high_scores.txt"
 MAX_ALLOWED_HIGH_SCORES = 3
 
 # CSSE7030 Task Constants
-TIME_MACHINE = 'M'
+TIME_MACHINE = "M"
 
-IMAGES = {
-    **IMAGES,
-    TIME_MACHINE: "images/time_machine.png"
-}
+IMAGES = {**IMAGES, TIME_MACHINE: "images/time_machine.png"}
 
 """
 A model of a zombie survival game wherein the player has to reach
@@ -120,8 +117,8 @@ def random_directions() -> List[Tuple[int, int]]:
 
 
 def first_in_direction(
-        grid: 'Grid', start: 'Position', offset: 'Position'
-) -> Optional[Tuple['Position', 'Entity']]:
+    grid: "Grid", start: "Position", offset: "Position"
+) -> Optional[Tuple["Position", "Entity"]]:
     """
     Get the first entity in in the direction of a position
     Parameters:
@@ -270,7 +267,7 @@ class Position:
         of the position class, the unique data is the x and y values.
         Therefore, we can calculate an appropriate hash by hashing a tuple of
         the x and y values.
-        
+
         Reference: https://stackoverflow.com/questions/17585730/what-does-hash-do-in-python
         """
         return hash((self.get_x(), self.get_y()))
@@ -378,7 +375,7 @@ class Entity:
     """
     Entity is an abstract class that is used to represent anything that can
     appear on the game's grid.
-    
+
     For example, the game grid will always have a player, so a player is
     considered a type of entity. A game grid may also have a zombie, so a
     zombie is considered a type of entity.
@@ -389,10 +386,10 @@ class Entity:
         The `step` method is called on every entity in the game grid after each
         move made by the player, it controls what actions an entity will perform
         during the _step_ event.
-        
+
         The abstract Entity class will not perform any action during the
         _step_ event. Therefore, this method should do nothing.
-        
+
         Parameters:
             position: The position of this entity when the _step_ event
                       is triggered.
@@ -403,13 +400,13 @@ class Entity:
     def display(self) -> str:
         """
         Return the character used to represent this entity in a text-based grid.
-        
+
         An instance of the abstract Entity class should never be placed in the
         grid, so this method should only be implemented by subclasses of Entity.
-        
+
         To indicate that this method needs to be implemented by subclasses,
         this method should raise a NotImplementedError.
-        
+
         Raises:
             NotImplementedError: Whenever this method is called.
         """
@@ -418,14 +415,14 @@ class Entity:
     def __repr__(self) -> str:
         """
         Return a representation of this entity.
-        
+
         By convention, the repr string of a class should look as close as
         possible to how the class is constructed. Since entities do not take
         constructor parameters, the repr string will be the class name followed
         by parentheses, ().
-        
+
         For example, the representation of the Entity class will be Entity().
-        
+
         Examples:
             >>> repr(Entity())
             'Entity()'
@@ -442,7 +439,7 @@ class Player(Entity):
     """
     A player is a subclass of the entity class that represents the player
     that the user controls on the game grid.
-    
+
     Examples:
         >>> player = Player()
         >>> repr(player)
@@ -455,7 +452,7 @@ class Player(Entity):
         """
         Return the character used to represent the player entity in a
         text-based grid.
-        
+
         A player should be represented by the 'P' character.
         """
         return PLAYER
@@ -465,10 +462,10 @@ class Hospital(Entity):
     """
     A hospital is a subclass of the entity class that represents the hospital
     in the grid.
-    
+
     The hospital is the entity that the player has to reach in order to win
     the game.
-    
+
     Examples:
         >>> hospital = Hospital()
         >>> repr(hospital)
@@ -481,7 +478,7 @@ class Hospital(Entity):
         """
         Return the character used to represent the hospital entity in a
         text-based grid.
-        
+
         A hospital should be represented by the 'H' character.
         """
         return HOSPITAL
@@ -490,10 +487,10 @@ class Hospital(Entity):
 class Grid:
     """
     The Grid class is used to represent the 2D grid of entities.
-    
+
     The grid can vary in size but it is always a square.
     Each (x, y) position in the grid can only contain one entity at a time.
-    
+
     Examples:
         >>> grid = Grid(5)
         >>> grid.get_size()
@@ -517,9 +514,9 @@ class Grid:
         """
         A grid is constructed with a size that dictates the length and width
         of the grid.
-        
+
         Initially a grid does not contain any entities.
-        
+
         Parameters:
             size: The length and width of the grid.
         """
@@ -533,15 +530,15 @@ class Grid:
     def in_bounds(self, position: Position) -> bool:
         """
         Return True if the given position is within the bounds of the grid.
-        
+
         For a position to be within the bounds of the grid, both the x and y
         coordinates have to be greater than or equal to zero but less than
         the size of the grid.
-        
+
         Parameters:
             position: An (x, y) position that we want to check is
                       within the bounds of the grid.
-                      
+
         Examples:
             >>> grid5 = Grid(5)
             >>> grid5.in_bounds(Position(0, 10))
@@ -558,26 +555,25 @@ class Grid:
             >>> grid10.in_bounds(Position(9, 10))
             False
         """
-        return (0 <= position.get_x() < self._size
-                and 0 <= position.get_y() < self._size)
+        return 0 <= position.get_x() < self._size and 0 <= position.get_y() < self._size
 
     def add_entity(self, position: Position, entity: Entity) -> None:
         """
         Place a given entity at a given position of the grid.
-        
+
         If there is already an entity at the given position, the given
         entity will replace the existing entity.
-        
+
         If the given position is outside the bounds of the grid, the entity
         should not be added.
-        
+
         \\textbf{Hint:} You may find it helpful to implement `get_entity` below
         at the same time as this method.
-        
+
         Parameters:
             position: An (x, y) position in the grid to place the entity.
             entity: The entity to place on the grid.
-            
+
         Examples:
             >>> grid = Grid(4)
             >>> grid.add_entity(Position(0, 0), Player())
@@ -595,11 +591,11 @@ class Grid:
     def remove_entity(self, position: Position) -> None:
         """
         Remove the entity, if any, at the given position.
-        
+
         Parameters:
             position: An (x, y) position in the grid from which the entity
                       is removed.
-                      
+
         Examples:
             >>> grid = Grid(4)
             >>> grid.add_entity(Position(0, 0), Player())
@@ -613,12 +609,12 @@ class Grid:
     def get_entity(self, position: Position) -> Optional[Entity]:
         """
         Return the entity that is at the given position in the grid.
-        
+
         If there is no entity at the given position, returns None.
         If the given position is out of bounds, returns None.
-        
+
         See the above `add_entity` method for examples.
-        
+
         Parameters:
             position: The (x, y) position in the grid to check for an entity.
         """
@@ -628,14 +624,14 @@ class Grid:
         """
         Return a dictionary with position instances as the keys and entity
         instances as the values.
-        
+
         For every position in the grid that has an entity, the returned
         dictionary should contain an entry with the position instance
         mapped to the entity instance.
-        
+
         Updating the returned dictionary should have no side-effects.
         It would not modify the grid.
-        
+
         Examples:
             >>> grid = Grid(4)
             >>> grid.add_entity(Position(0, 0), Player())
@@ -648,10 +644,10 @@ class Grid:
     def get_entities(self) -> List[Entity]:
         """
         Return a list of all the entities in the grid.
-        
+
         Updating the returned list should have no side-effects.
         It would not modify the grid.
-        
+
         Examples:
             # The example below shows a grid with multiple hospitals this should
             # never occur in practice but isn't prohibited
@@ -668,20 +664,20 @@ class Grid:
     def move_entity(self, start: Position, end: Position) -> None:
         """
         Move an entity from the given start position to the given end position.
-        
+
         * If the end position or start position is out of the grid bounds,
           do not attempt to move.
         * If there is no entity at the given start position,
           do not attempt to move.
         * If there is an entity at the given end position, replace that entity
           with the entity from the start position.
-          
+
         The start position should not have an entity after moving.
-        
+
         Parameters:
             start: The position the entity is in initially.
             end: The position to which the entity will be moved.
-            
+
         Examples:
             >>> grid = Grid(10)
             >>> grid.add_entity(Position(1, 2), Player())
@@ -701,12 +697,12 @@ class Grid:
     def find_player(self) -> Optional[Position]:
         """
         Return the position of the player within the grid.
-        
+
         Return None if there is no player in the grid.
-        
+
         If the grid has multiple players (which it should not),
         returning any of the player positions is sufficient.
-        
+
         Examples:
             >>> grid = Grid(10)
             >>> grid.add_entity(Position(4, 6), Player())
@@ -726,7 +722,7 @@ class Grid:
         a postion.
         The characters are the display representation of the entity at that
         position. i.e. 'P' for player, `H' for hospital.
-        
+
         Only positions that have an entity should exist in the dictionary.
 
         Examples:
@@ -749,7 +745,7 @@ class MapLoader:
     """
     The MapLoader class is used to read a map file and create an appropriate
     Grid instance which stores all the map file entities.
-    
+
     The MapLoader class is an abstract class to allow for extensible map
     definitions. The BasicMapLoader class described below is a very simple
     implementation of the MapLoader which only handles the player and hospital
@@ -759,15 +755,15 @@ class MapLoader:
     def load(self, filename: str) -> Grid:
         """
         Load a new Grid instance from a map file.
-        
+
         Load will open the map file and read each line to find all the entities
         in the grid and add them to the new Grid instance.
-        
+
         The `create_entity` method below is used to turn a character
         in the map file into an Entity instance.
-        
+
         \\textbf{Hint:} The `load_map` function in the support code may be helpful.
-        
+
         Parameters:
             filename: Path where the map file should be found.
         """
@@ -783,13 +779,13 @@ class MapLoader:
         """
         Create and return a new instance of the Entity class based on the
         provided token.
-        
+
         For example, if the given token is 'P' a Player instance will be
         returned.
-        
+
         The abstract MapLoader class does not support any entities, when this
         method is called, it should raise a NotImplementedError.
-        
+
         Parameters:
             token: Character representing the Entity subtype.
         """
@@ -800,7 +796,7 @@ class BasicMapLoader(MapLoader):
     """
     BasicMapLoader is a subclass of MapLoader which can handle loading map
     files which include the following entities:
-    
+
     * Player
     * Hospital
     """
@@ -809,14 +805,14 @@ class BasicMapLoader(MapLoader):
         """
         Create and return a new instance of the Entity class based on the
         provided token.
-        
+
         For example, if the given token is 'P' a Player instance will be
         returned.
-        
+
         The BasicMapLoader class only supports the Player and Hospital entities.
         When a token is provided that does not represent the Player or Hospital,
         this method should raise a ValueError.
-        
+
         Parameters:
             token: Character representing the Entity subtype.
         """
@@ -832,7 +828,7 @@ class Game:
     """
     The Game handles some of the logic for controlling the actions of the player
     within the grid.
-    
+
     The Game class stores an instance of the Grid and keeps track of the player
     within the grid so that the player can be controlled.
     """
@@ -841,10 +837,10 @@ class Game:
         """
         The construction of a Game instance takes the grid upon which the game
         is being played.
-        
+
         Preconditions:
             The grid has a player, i.e. `grid.find_player()` is not None.
-            
+
         Parameters:
             grid (Grid): The game's grid.
         """
@@ -859,9 +855,9 @@ class Game:
     def get_player(self) -> Optional[Player]:
         """
         Return the instance of the Player class in the grid.
-        
+
         If there is no player in the grid, return None.
-        
+
         If there are multiple players in the grid, returning any player is
         sufficient.
         """
@@ -876,7 +872,7 @@ class Game:
         """
         The _step_ method of the game will be called after every action
         performed by the player.
-        
+
         This method triggers the _step_ event by calling the step method
         of every entity in the grid. When the entity's step method is called,
         it should pass the entity's current position and this game as parameters.
@@ -897,13 +893,13 @@ class Game:
     def move_player(self, offset: Position) -> None:
         """
         Move the player entity in the grid by a given offset.
-        
+
         Add the offset to the current position of the player, move the player
         entity within the grid to the new position.
-        
+
         If the new position is outside the bounds of the grid, or there is no
         player in the grid, this method should not move the player.
-        
+
         Parameters:
             offset: A position to add to the player's current position
                     to produce the player's new desired position.
@@ -917,16 +913,16 @@ class Game:
     def direction_to_offset(self, direction: str) -> Optional[Position]:
         """
         Convert a direction, as a string, to a offset position.
-        
+
         The offset position can be added to a position to move in the
         given direction.
-        
+
         If the given direction is not valid, this method should return None.
-        
+
         Parameters:
             direction: Character representing the direction in which the
                        player should be moved.
-                       
+
         Examples:
             >>> game = Game(Grid(5))
             >>> game.direction_to_offset("W")
@@ -954,7 +950,7 @@ class Game:
     def has_won(self) -> bool:
         """
         Return true if the player has won the game.
-        
+
         The player wins the game by stepping onto the hospital. When the player
         steps on the hospital, there will be no hospital entity in the grid.
         """
@@ -963,7 +959,7 @@ class Game:
     def has_lost(self) -> bool:
         """
         Return true if the player has lost the game.
-        
+
         Currently there is no way for the player to lose the game so this
         method should always return false.
         """
@@ -971,14 +967,15 @@ class Game:
 
     def restart(self):
         """Restarts game"""
-        raise NotImplementedError("Game is not yet restartable as off this "
-                                  "implementation")
+        raise NotImplementedError(
+            "Game is not yet restartable as off this " "implementation"
+        )
 
 
 class TextInterface(GameInterface):
     """
     A text-based interface between the user and the game instance.
-    
+
     This class handles all input collection from the user and printing to the
     console.
     """
@@ -988,7 +985,7 @@ class TextInterface(GameInterface):
         The text-interface is constructed knowing the size of the game to be
         played, this allows the draw method to correctly print the right
         sized grid.
-        
+
         Parameters:
             size (int): The size of the game to be displayed and played.
         """
@@ -998,11 +995,11 @@ class TextInterface(GameInterface):
         """
         The draw method should print out the given game surrounded
         by '#' characters representing the border of the game.
-        
+
         Parameters:
             game: An instance of the game class that is to be displayed
                   to the user by printing the grid.
-                  
+
         Examples:
             >>> grid = Grid(4)
             >>> grid.add_entity(Position(2, 2), Player())
@@ -1032,10 +1029,10 @@ class TextInterface(GameInterface):
         The play method implements the game loop, constantly prompting the user
         for their action, performing the action and printing the game until the
         game is over.
-        
+
         \\textbf{Hint:} Refer to the Gameplay section for a detailed
         explanation of the game loop.
-        
+
         Parameters:
             game: The game to start playing.
         """
@@ -1060,16 +1057,16 @@ class TextInterface(GameInterface):
         """
         The handle_action method is used to process the actions entered
         by the user during the game loop in the play method.
-        
+
         The handle_action method should be able to handle all movement
         actions, i.e. 'W', 'A', 'S', 'D'.
-        
+
         If the given action is not a direction, this method should
         only trigger the step event and do nothing else.
 
         \\textbf{Hint:} Refer to the Gameplay section for a detailed
         explanation of the game loop.
-        
+
         Parameters:
             game: The game that is currently being played.
             action: An action entered by the player during the game loop.
@@ -1088,7 +1085,7 @@ class VulnerablePlayer(Player):
     """
     The VulnerablePlayer class is a subclass of the Player, this class extends
     the player by allowing them to become infected.
-    
+
     Examples:
         >>> player = VulnerablePlayer()
         >>> player.is_infected()
@@ -1124,7 +1121,7 @@ class VulnerablePlayer(Player):
 class Zombie(Entity):
     """
     The Zombie entity will wander the grid at random.
-    
+
     The movement of a zombie is triggered by the player performing an action,
     i.e. the zombie moves during each _step_ event.
     """
@@ -1133,13 +1130,11 @@ class Zombie(Entity):
     def __init__(self):
         self._is_stepping = True
 
-    def _directions(
-            self, position: Position, game: Game
-    ) -> List[Tuple[int, int]]:
+    def _directions(self, position: Position, game: Game) -> List[Tuple[int, int]]:
         """
         Returns the list of offsets sorted by the order of directions
         prioritised by this zombie
-            
+
         Parameters:
             position: current position of this zombie
             game: current game being played
@@ -1151,16 +1146,16 @@ class Zombie(Entity):
         """
         The `step` method for the zombie entity will move the zombie
         in a random direction.
-        
+
         To implement this, generate a list of the possible directions to move
         in a random order by calling the `random_directions` function
         from the support code. Check each of the directions to see if the
         resultant position is available. The resultant position is the position
         you reach from moving in a direction.
-        
+
         To be available, a position must be in the bounds of the grid and not
         already contain an entity.
-        
+
         i.e. if `random_directions` returns [(1, 0), (0, 1), (-1, 0), (0, -1)]
         \\begin{enumerate}
         \\item check the current position + (1, 0),
@@ -1172,12 +1167,12 @@ class Zombie(Entity):
         \\item check the current position + (0, -1),
         if that position is available, move there and stop looking.
         \\end{enumerate}
-        
+
         If none of the resultant positions are available, do not move the zombie.
 
         If the position the zombie is going to move to contains the player,
         the zombie should infect the player but not move to that position.
-        
+
         Parameters:
             position: The position of this zombie when the _step_ event
                       is triggered.
@@ -1209,7 +1204,7 @@ class Zombie(Entity):
         """
         Return the character used to represent the zombie entity in a
         text-based grid.
-        
+
         A zombie should be represented by the 'Z' character.
         """
         return ZOMBIE
@@ -1234,7 +1229,7 @@ class IntermediateGame(Game):
     def has_lost(self) -> bool:
         """
         Return true if the player has lost the game.
-        
+
         The player loses the game if they become infected by a zombie.
         """
         player = self.get_player()
@@ -1253,13 +1248,13 @@ class IntermediateMapLoader(BasicMapLoader):
     """
     The IntermediateMapLoader class extends BasicMapLoader to add support for
     new entities that are added in task 2 of the assignment.
-    
+
     When a player token, 'P', is found, a VulnerablePlayer instance should
     be created instead of a Player.
-    
+
     In addition to the entities handled by the BasicMapLoader, the
     IntermediateMapLoader should be able to load the following entities:
-    
+
     * Zombie
     """
 
@@ -1278,9 +1273,7 @@ class TrackingZombie(Zombie):
     to see the player and move towards them.
     """
 
-    def _directions(
-            self, position: Position, game: Game
-    ) -> List[Tuple[int, int]]:
+    def _directions(self, position: Position, game: Game) -> List[Tuple[int, int]]:
         target = game.get_grid().find_player()
         if target is None:
             return []  # Should never happen.
@@ -1296,16 +1289,16 @@ class TrackingZombie(Zombie):
         """
         The `step` method for the tracking zombie will move the tracking zombie
         in the best possible direction to move closer to the player.
-        
+
         To implement this, sort a list of possible directions to minimize
         the distance between the resultant position and the player's position.
         The resultant position is the position resulting from moving the
         tracking zombie in a direction.
-        
+
         If there are multiple directions that result in being the same
         distance from the player, the direction should be picked in preference
         order picking 'W' first followed by 'S', 'N', and finally 'E'.
-        
+
         i.e. if the zombie is at (1, 1) and the player is at (2, 4)
         * Moving 'N' will give a resultant position of (1, 2), which is a
           distance of 3 from the player
@@ -1315,23 +1308,23 @@ class TrackingZombie(Zombie):
           distance of 5 from the player
         * Moving 'S' will give a resultant position of (1, 0) which is a
           distance of 5 from the player
-          
+
         In this situation 'N' and 'E' compete for best direction so 'N' is
         picked, 'W' and 'S' are also equidistant so 'W' is picked, causing an
         order of 'N', 'E', 'W', 'S' to be chosen.
-        
+
         Similar to the zombie's `step` method, this method should check each of
         the possible directions in order, and move the zombie to the first
         available position.
-        
+
         To be available, a position must be in the bounds of the grid and not
         already contain an entity.
-        
+
         If none of the resultant positions are available, do not move the zombie.
 
         If the position the zombie is going to move to contains the player,
         the zombie should infect the player but not move to that position.
-        
+
         Parameters:
             position: The position of this zombie when the _step_ event
                       is triggered.
@@ -1343,7 +1336,7 @@ class TrackingZombie(Zombie):
         """
         Return the character used to represent the tracking zombie entity in
         a text-based grid.
-        
+
         A tracking zombie should be represented by the 'T' character.
         """
         return TRACKING_ZOMBIE
@@ -1431,7 +1424,7 @@ class Pickup(Entity):
 class Garlic(Pickup):
     """
     Garlic is an entity which the player can pickup.
-    
+
     While the player is holding a garlic entity they cannot
     be infected by a zombie.
     """
@@ -1439,7 +1432,7 @@ class Garlic(Pickup):
     def get_durability(self) -> int:
         """
         Return the durability of a garlic.
-        
+
         A player can only hold a garlic entity for 10 _steps_.
         """
         return LIFETIMES[GARLIC]
@@ -1448,7 +1441,7 @@ class Garlic(Pickup):
         """
         Return the character used to represent the garlic entity in
         a text-based grid.
-        
+
         A garlic should be represented by the 'G' character.
         """
         return GARLIC
@@ -1457,7 +1450,7 @@ class Garlic(Pickup):
 class Crossbow(Pickup):
     """
     Crossbow is an entity which the player can pickup.
-    
+
     While the player is holding a crossbow entity they are
     able to use the fire action to launch a protectile in a
     given direction, removing the first zombie in that direction.
@@ -1466,7 +1459,7 @@ class Crossbow(Pickup):
     def get_durability(self) -> int:
         """
         Return the durability of a crossbow.
-        
+
         A player can only hold a crossbow entity for 5 _steps_.
         """
         return LIFETIMES[CROSSBOW]
@@ -1484,11 +1477,11 @@ class Inventory:
     """
     An inventory holds a collection of entities which the player can pickup,
     i.e. Pickup subclasses.
-    
+
     The player is only able to hold any given item for a limited duration, this
     is the lifetime of the item. Once the lifetime is exceeded the item will
     be destroyed by being removed from the inventory.
-    
+
     Examples:
         >>> crossbow = Crossbow()
         >>> garlic = Garlic()
@@ -1525,9 +1518,9 @@ class Inventory:
         """
         The step method should be called every time the player steps as a part
         of the player's `step` method.
-        
-        When this method is called, the lifetime of every active item stored 
-        within the inventory should decrease. Any items in the inventory that 
+
+        When this method is called, the lifetime of every active item stored
+        within the inventory should decrease. Any items in the inventory that
         have exceeded their lifetime should be removed.
         """
         new_items = []
@@ -1559,7 +1552,7 @@ class Inventory:
         """
         Return true if the inventory contains any entities which return the
         given pickup_id from the entity's `display` method.
-        
+
         Examples:
             >>> inventory = Inventory()
             >>> inventory.add_item(Garlic())
@@ -1597,7 +1590,7 @@ class HoldingPlayer(VulnerablePlayer):
     """
     The HoldingPlayer is a subclass of VulnerablePlayer that extends the
     existing functionality of the player.
-    
+
     In particular, a holding player will now keep an inventory.
     """
 
@@ -1624,7 +1617,7 @@ class HoldingPlayer(VulnerablePlayer):
         """
         The `step` method for a holding player will notify its inventory
         that a _step_ event has occurred.
-        
+
         Parameters:
             position: The position of this entity when the _step_ event
                       is triggered.
@@ -1642,10 +1635,10 @@ class AdvancedGame(IntermediateGame):
     def move_player(self, offset: Position) -> None:
         """
         Move the player entity in the grid by a given offset.
-        
+
         If the player moves onto a Pickup item, it should be added to the
         player's inventory and removed from the grid.
-        
+
         Parameters:
             offset: A position to add to the player's current position
                     to produce the player's new desired position.
@@ -1668,13 +1661,13 @@ class AdvancedMapLoader(IntermediateMapLoader):
     """
     The AdvancedMapLoader class extends IntermediateMapLoader to add support for
     new entities that are added in task 3 of the assignment.
-    
+
     When a player token, 'P', is found, a HoldingPlayer instance should be
     created instead of a Player or VulnerablePlayer.
-    
+
     In addition to the entities handled by the IntermediateMapLoader, the
     AdvancedMapLoader should be able to load the following entities:
-    
+
     * TrackingZombie
     * Garlic
     * Crossbow
@@ -1695,7 +1688,7 @@ class AdvancedMapLoader(IntermediateMapLoader):
 class AdvancedTextInterface(TextInterface):
     """
     A text-based interface between the user and the game instance.
-    
+
     This class extends the existing functionality of TextInterface to include
     displaying the state of the player's inventory and a firing action.
     """
@@ -1704,20 +1697,20 @@ class AdvancedTextInterface(TextInterface):
         """
         The draw method should print out the given game surrounded
         by '#' characters representing the border of the game.
-        
+
         This method should behave in the same way as the super class except
         if a player is currently holding items in their inventory.
-        
+
         If the player is holding items in their inventory,
         'The player is currently holding:' should be printed after the grid,
         followed by the representation of each item in the inventory on
         separate lines.
         See the examples for more details.
-        
+
         Parameters:
             game: An instance of the game class that is to be displayed
                   to the user by printing the grid.
-                  
+
         Examples:
             >>> grid = Grid(4)
             >>> grid.add_entity(Position(2, 2), HoldingPlayer())
@@ -1757,7 +1750,7 @@ class AdvancedTextInterface(TextInterface):
         """
         The handle_action method for AdvancedTextInterface should extend
         the interface to be able to handle the fire action for a crossbow.
-        
+
         If the user enters, 'F' for fire take the following actions:`
         \\begin{enumerate}
         \\item Check that the user has something to fire, i.e. a crossbow,
@@ -1776,10 +1769,10 @@ class AdvancedTextInterface(TextInterface):
                zombie.
         \\item Trigger the _step_ event.
         \\end{enumerate}`
-        
+
         If the action is not fire, this method should behave the same as
         `TextInterface.handle_action`.
-        
+
         Parameters:
             game: The game that is currently being played.
             action: An action entered by the player during the game loop.
@@ -1801,9 +1794,7 @@ class AdvancedTextInterface(TextInterface):
                         return  # Should never happen.
 
                     # Find the first entity in the direction player fired.
-                    first = first_in_direction(
-                        game.get_grid(), start, offset
-                    )
+                    first = first_in_direction(game.get_grid(), start, offset)
 
                     # If the entity is a zombie, kill it.
                     if first is not None and first[1].display() in ZOMBIES:
@@ -1835,8 +1826,9 @@ class GameState:
         self._grid = game.get_grid().serialize()
         self._grid_size = game.get_grid().get_size()
         # List of inventory items, in (item_display, lifetime) format.
-        self._inventory: List[Tuple[str, int]] = \
+        self._inventory: List[Tuple[str, int]] = (
             game.get_player().get_inventory().serialize()
+        )
         self._moves = game.get_move_count()
         self._elapsed_steps = game.get_steps()
         self._map_loader = SuperAdvancedMapLoader()
@@ -1845,8 +1837,7 @@ class GameState:
         """Returns grid of stored game."""
         grid = Grid(self._grid_size)
         for position, entity in self._grid.items():
-            grid.add_entity(Position(*position),
-                            self._map_loader.create_entity(entity))
+            grid.add_entity(Position(*position), self._map_loader.create_entity(entity))
         return grid
 
     def get_moves(self) -> int:
@@ -1908,7 +1899,7 @@ class GameState:
             serialised_grid,
             serialised_inventory,
             serialised_moves,
-            serialised_steps
+            serialised_steps,
         ) = serialised.splitlines()
         # Load grid and grid size.
         instance._grid_size = int(serialised_size)
@@ -1934,7 +1925,7 @@ class GameState:
 
 # NEW
 class RestartableGame(AdvancedGame):
-    """ A game that can be restarted. """
+    """A game that can be restarted."""
 
     def __init__(self, grid: Grid):
         super().__init__(grid)
@@ -1973,6 +1964,7 @@ class RestartableGame(AdvancedGame):
 # NEW
 class TimeMachine(Pickup):
     """Represents a time machine pick up item."""
+
     def __init__(self, to_revert=6):
         """
         Parameters:
@@ -2017,6 +2009,7 @@ class TimeMachine(Pickup):
 # NEW
 class SuperAdvancedMapLoader(AdvancedMapLoader):
     """Map Loader that supports loading time machines."""
+
     def create_entity(self, token: str) -> Entity:
         if token == TIME_MACHINE:
             return TimeMachine()
@@ -2028,6 +2021,7 @@ class SuperAdvancedMapLoader(AdvancedMapLoader):
 # NEW
 class AdvancedInventory(Inventory):
     """Inventory that supports a time machine."""
+
     def add_item(self, item: Pickup) -> None:
         if isinstance(item, TimeMachine) and self.contains(TIME_MACHINE):
             return
@@ -2052,6 +2046,7 @@ class AdvancedInventory(Inventory):
 # NEW
 class AdvancedHoldingPlayer(HoldingPlayer):
     """Player that allows overriding the inventory."""
+
     def __init__(self):
         super().__init__()
         self._inventory = AdvancedInventory()
@@ -2074,6 +2069,7 @@ class SuperUltraHyperMegaAdvancedGame(RestartableGame):
     A game so advanced it's the grandson of AdvancedGame
     It basically supports the time machine lol.
     """
+
     def move_player(self, offset: Position) -> None:
         destination = self._player_position.add(offset)
         super().move_player(offset)
@@ -2095,7 +2091,6 @@ def advanced_game(filename: str) -> AdvancedGame:
     return SuperUltraHyperMegaAdvancedGame(grid)
 
 
-
 """ Task 1 widgets """
 import tkinter as tk
 from tkinter import messagebox
@@ -2103,10 +2098,10 @@ from typing import Tuple
 
 
 class AbstractGrid(tk.Canvas):
-    """ Support for creation of and annotation on grids. """
+    """Support for creation of and annotation on grids."""
 
     def __init__(self, master, rows, cols, width, height, **kwargs):
-        """ Constructor for AbstractGrid.
+        """Constructor for AbstractGrid.
 
         Parameters:
             master (tk.Tk | tk.Frame): The master frame for this Canvas.
@@ -2122,7 +2117,7 @@ class AbstractGrid(tk.Canvas):
         self._cell_height = height // rows
 
     def get_bbox(self, position):
-        """ Returns the bounding box of the given (row, col) position.
+        """Returns the bounding box of the given (row, col) position.
 
         Parameters:
             position (tuple<int, int>): The (row, col) cell position.
@@ -2137,7 +2132,7 @@ class AbstractGrid(tk.Canvas):
         return x_min, y_min, x_max, y_max
 
     def pixel_to_position(self, pixel):
-        """ Converts the x, y pixel position to a (row, col) position.
+        """Converts the x, y pixel position to a (row, col) position.
 
         Parameters:
             pixel (tuple<int, int>): x, y position.
@@ -2148,7 +2143,7 @@ class AbstractGrid(tk.Canvas):
         return y_coord // self._cell_height, x_coord // self._cell_width
 
     def get_position_center(self, position):
-        """ Gets the graphics coordinates for the center of the cell at the
+        """Gets the graphics coordinates for the center of the cell at the
             given (row, col) position.
 
         Parameters:
@@ -2163,7 +2158,7 @@ class AbstractGrid(tk.Canvas):
         return x_pos, y_pos
 
     def annotate_position(self, position, text):
-        """ Annotates the cell at the given (row, col) position with the
+        """Annotates the cell at the given (row, col) position with the
             provided text.
 
         Parameters:
@@ -2173,15 +2168,15 @@ class AbstractGrid(tk.Canvas):
         self.create_text(self.get_position_center(position), text=text)
 
     def clear(self):
-        """ Clears all child widgets off the canvas. """
+        """Clears all child widgets off the canvas."""
         self.delete("all")
 
 
 class BasicMap(AbstractGrid):
-    """ A simple rectangle-based display for the game map. """
+    """A simple rectangle-based display for the game map."""
 
     def __init__(self, master, size, bg=MAP_BACKGROUND_COLOUR, **kwargs):
-        """ Constructor for BasicMap.
+        """Constructor for BasicMap.
 
         Parameters:
             master (tk.Tk | tk.Frame): The master frame for this Canvas.
@@ -2191,14 +2186,14 @@ class BasicMap(AbstractGrid):
         super().__init__(master, size, size, width, height, bg=bg, **kwargs)
 
     def draw_entity(self, position, tile_type):
-        """ Draws the entity with id tile_type at the given position using a
+        """Draws the entity with id tile_type at the given position using a
             coloured rectangle with superimposed text for the ID.
 
         Parameters:
             position (tuple<int, int>): (row, column) position to draw at.
             tile_type (str): ID of the entity.
         """
-        text_colour = 'white' if tile_type in (PLAYER, HOSPITAL) else 'black'
+        text_colour = "white" if tile_type in (PLAYER, HOSPITAL) else "black"
         colour = ENTITY_COLOURS.get(tile_type, MAP_BACKGROUND_COLOUR)
         bbox = self.get_bbox(position)
         center = self.get_position_center(position)
@@ -2208,22 +2203,29 @@ class BasicMap(AbstractGrid):
 
 
 class InventoryView(AbstractGrid):
-    """ A display of the inventory which allows users to activate items with a
-        left click.
+    """A display of the inventory which allows users to activate items with a
+    left click.
     """
 
     def __init__(self, master, rows, **kwargs):
-        """ Constructor for InventoryView.
+        """Constructor for InventoryView.
 
         Parameters:
             master (tk.Tk | tk.Frame): The master frame for this canvas.
             rows (int): #rows to allow in this inventory (including header).
         """
-        super().__init__(master, rows, 2, INVENTORY_WIDTH, CELL_SIZE * rows,
-                         bg=LIGHT_PURPLE, **kwargs)
+        super().__init__(
+            master,
+            rows,
+            2,
+            INVENTORY_WIDTH,
+            CELL_SIZE * rows,
+            bg=LIGHT_PURPLE,
+            **kwargs,
+        )
 
     def draw(self, inventory):
-        """ Draws the inventory label and current items with their remaining
+        """Draws the inventory label and current items with their remaining
             lifetimes.
 
         Parameters:
@@ -2238,28 +2240,34 @@ class InventoryView(AbstractGrid):
             lifetime_pos = self.get_position_center((i + 1, 1))
 
             # Colour background and change text colour for active items
-            text_colour = 'black'
+            text_colour = "black"
             if pickup.is_active():
                 x_min, y_min, _, y_max = self.get_bbox(((i + 1), 0))
                 x_max = x_min + INVENTORY_WIDTH
-                self.create_rectangle((x_min, y_min, x_max, y_max),
-                                      fill=DARK_PURPLE, outline='')
-                text_colour = 'white'
+                self.create_rectangle(
+                    (x_min, y_min, x_max, y_max), fill=DARK_PURPLE, outline=""
+                )
+                text_colour = "white"
 
             # Add text for entity type and lifetime
             self.create_text(entity_pos, text=entity_name, fill=text_colour)
             self.create_text(lifetime_pos, text=lifetime, fill=text_colour)
 
     def _draw_inventory_label(self):
-        """ Draws the inventory label centered in the first row. """
+        """Draws the inventory label centered in the first row."""
         # middle of first row is same as top left of second column first row
         middle_x, *_ = self.get_bbox((0, 1))
         _, middle_y = self.get_position_center((0, 0))
-        self.create_text(middle_x, middle_y, text='Inventory', fill=DARK_PURPLE,
-                         font=('Comic Sans', 22))
+        self.create_text(
+            middle_x,
+            middle_y,
+            text="Inventory",
+            fill=DARK_PURPLE,
+            font=("Comic Sans", 22),
+        )
 
     def use_item(self, pixel, inventory):
-        """ Activates the item in the given row if one exists.
+        """Activates the item in the given row if one exists.
 
         Parameters:
             pixel (tuple<int, int>): The pixel position of the click event.
@@ -2267,18 +2275,19 @@ class InventoryView(AbstractGrid):
         """
         row = self.pixel_to_position(pixel)[0] - 1  # -1 to account for header
         items = inventory.get_items()
-        if 0 <= row < len(items) and (items[row].is_active() or
-                                      not inventory.any_active()):
+        if 0 <= row < len(items) and (
+            items[row].is_active() or not inventory.any_active()
+        ):
             items[row].toggle_active()
             self.clear()
             self.draw(inventory)
 
 
 class BasicGraphicalInterface:
-    """ A basic graphical interface for EndOfDayz. """
+    """A basic graphical interface for EndOfDayz."""
 
     def __init__(self, root, size, **kwargs):
-        """ Constructor for BasicGraphicalInterface.
+        """Constructor for BasicGraphicalInterface.
 
         Parameters:
             root (tk.Tk | tk.Frame): The master frame for this Frame.
@@ -2297,7 +2306,7 @@ class BasicGraphicalInterface:
         self._running = True
 
     def _add_title(self):
-        """ Configure the window title and add a new title label. """
+        """Configure the window title and add a new title label."""
         self._root.title(TITLE)
 
         tk.Label(
@@ -2305,12 +2314,12 @@ class BasicGraphicalInterface:
             text=TITLE,
             bg=ACCENT_COLOUR,
             relief=tk.RAISED,
-            fg='white',
-            font=('Arial', 28)
+            fg="white",
+            font=("Arial", 28),
         ).pack(fill=tk.X)
 
     def _set_up_view(self):
-        """ Set up widgets for map and inventory. """
+        """Set up widgets for map and inventory."""
         # Outer frame
         self._game_frame = tk.Frame(self._container)
         self._game_frame.pack()
@@ -2324,11 +2333,11 @@ class BasicGraphicalInterface:
         self._inventory_display.pack(side=tk.LEFT)
 
     def _get_map(self):
-        """ (BasicMap) Gets the map instance. """
+        """(BasicMap) Gets the map instance."""
         return BasicMap(self._game_frame, self._size, bg=MAP_BACKGROUND_COLOUR)
 
     def _inventory_click(self, event, inventory):
-        """ Event handler for left click on inventory.
+        """Event handler for left click on inventory.
 
         Parameters:
             event (tk.Event): Event object.
@@ -2339,7 +2348,7 @@ class BasicGraphicalInterface:
         self._inventory_display.use_item(pixel, inventory)
 
     def draw(self, game):
-        """ Clears and redraws the view based on the current game state.
+        """Clears and redraws the view based on the current game state.
 
         Parameters:
             game (Game): The current game.
@@ -2353,23 +2362,23 @@ class BasicGraphicalInterface:
         self._inventory_display.draw(game.get_player().get_inventory())
 
     def _draw_background(self):
-        """ Handles drawing the background for the whole grid. """
+        """Handles drawing the background for the whole grid."""
         pass  # Nothing for task 1 because bg is set through Frame bg argument
 
     def _handle_win(self, game):
-        """ Handles win behaviour. """
+        """Handles win behaviour."""
         self._root.update()  # For mac to update GUI before showing message
-        messagebox.showinfo('Game Over', 'You win!')
+        messagebox.showinfo("Game Over", "You win!")
         self._root.destroy()
 
     def _handle_loss(self):
-        """ Handles loss behaviour. """
+        """Handles loss behaviour."""
         self._root.update()  # For mac to update GUI before showing message
-        messagebox.showinfo('Game Over', 'You lose!')
+        messagebox.showinfo("Game Over", "You lose!")
         self._root.destroy()
 
     def _move(self, game, direction):
-        """ Handles player move.
+        """Handles player move.
 
         Parameters:
             game (Game): The current game.
@@ -2384,7 +2393,7 @@ class BasicGraphicalInterface:
             self._handle_win(game)
 
     def _step(self, game):
-        """ The _step method is called every second. This method triggers the
+        """The _step method is called every second. This method triggers the
             step method for all entities and updates the view accordingly.
 
         Parameters:
@@ -2454,12 +2463,11 @@ class BasicGraphicalInterface:
         self.draw(game)
 
     def _handle_keypress(self, event, game):
-        if event.char.lower() in ('w', 'a', 's', 'd'):
+        if event.char.lower() in ("w", "a", "s", "d"):
             self._move(game, event.char.upper())
 
-        if event.keysym in ('Left', 'Right', 'Up', 'Down'):
-            self._try_fire_crossbow(ARROWS_TO_DIRECTIONS.get(event.keysym),
-                                    game)
+        if event.keysym in ("Left", "Right", "Up", "Down"):
+            self._try_fire_crossbow(ARROWS_TO_DIRECTIONS.get(event.keysym), game)
 
     def pause(self):
         self._root.after_cancel(self._step_event)
@@ -2470,7 +2478,7 @@ class BasicGraphicalInterface:
         self._step_event = self._root.after(1000, self._step, game)
 
     def play(self, game):
-        """ Binds events and initializes gameplay.
+        """Binds events and initializes gameplay.
 
         Parameters:
             game (Game): The game instance.
@@ -2480,7 +2488,7 @@ class BasicGraphicalInterface:
         inventory = game.get_player().get_inventory()
         self._bind_inventory(inventory)
 
-        self._root.bind('<KeyPress>', lambda e: self._handle_keypress(e, game))
+        self._root.bind("<KeyPress>", lambda e: self._handle_keypress(e, game))
 
         self.resume(game)
         self._root.mainloop()
@@ -2493,7 +2501,8 @@ class BasicGraphicalInterface:
             inventory: inventory to be bound
         """
         self._inventory_display.bind(
-            '<Button-1>', lambda e: self._inventory_click(e, inventory))
+            "<Button-1>", lambda e: self._inventory_click(e, inventory)
+        )
 
 
 """ Task 2 widgets """
@@ -2503,20 +2512,20 @@ from PIL import ImageTk, Image
 
 
 class ImageMap(BasicMap):
-    """ An image-based display for the game map. """
+    """An image-based display for the game map."""
 
     def __init__(self, master, size, **kwargs):
-        """ Constructor for BasicMap.
+        """Constructor for BasicMap.
 
         Parameters:
             master (tk.Tk | tk.Frame): The master frame for this Canvas.
             size (int): The number of rows (= #columns) in this map.
         """
-        super().__init__(master, size, bg='white', **kwargs)
+        super().__init__(master, size, bg="white", **kwargs)
         self._images = {}
 
     def draw_entity(self, position, tile_type):
-        """ Draws the entity using a sprite image.
+        """Draws the entity using a sprite image.
 
         Parameters:
             position (tuple<int, int>): (row, column) position to draw at.
@@ -2526,7 +2535,7 @@ class ImageMap(BasicMap):
         self.create_image(*pixel, image=self.get_image(tile_type))
 
     def get_image(self, tile_type, angle=0):
-        """ Gets the image for the entity of given type. Creates a new image
+        """Gets the image for the entity of given type. Creates a new image
             if one doesn't exist for this entity and stores a reference to it.
 
         Parameters:
@@ -2538,82 +2547,83 @@ class ImageMap(BasicMap):
         cache_id = f"{tile_type}_{angle}"
         if cache_id not in self._images:
             image = ImageTk.PhotoImage(
-                image=Image.open(IMAGES.get(tile_type)).rotate(angle).resize(
-                    (CELL_SIZE, CELL_SIZE)))
+                image=Image.open(IMAGES.get(tile_type))
+                .rotate(angle)
+                .resize((CELL_SIZE, CELL_SIZE))
+            )
             self._images[cache_id] = image
         return self._images[cache_id]
 
 
 class StatusBar(tk.Frame):
-    """ A StatusBar to convey some useful information to the user about their
-        progress in the game. """
+    """A StatusBar to convey some useful information to the user about their
+    progress in the game."""
 
     def __init__(self, master, *args, **kwargs):
-        """ Constructor for StatusBar.
+        """Constructor for StatusBar.
 
         Parameters:
             master (tk.Tk | tk.Frame): The master frame for this Frame.
         """
         super().__init__(master, *args, **kwargs)
 
-        self._chaser = ImageTk.PhotoImage(image=Image.open('images/chaser.png'))
+        self._chaser = ImageTk.PhotoImage(image=Image.open("images/chaser.png"))
         tk.Label(self, image=self._chaser).pack(side=tk.LEFT, expand=True)
 
         self._set_up_timer()
         self._set_up_moves_label()
         self._set_up_buttons()
 
-        self._chasee = ImageTk.PhotoImage(image=Image.open('images/chasee.png'))
+        self._chasee = ImageTk.PhotoImage(image=Image.open("images/chasee.png"))
         tk.Label(self, image=self._chasee).pack(side=tk.LEFT, expand=True)
 
     def _set_up_timer(self):
-        """ Sets up widgets for timer information. """
+        """Sets up widgets for timer information."""
         timer_frame = tk.Frame(self)
         timer_frame.pack(side=tk.LEFT, expand=True, fill=tk.BOTH)
-        tk.Label(timer_frame, text='Timer').pack()
+        tk.Label(timer_frame, text="Timer").pack()
 
         self._time_label = tk.Label(timer_frame)
         self._time_label.pack()
 
     def _set_up_moves_label(self):
-        """ Sets up widgets for moves information. """
+        """Sets up widgets for moves information."""
         moves_frame = tk.Frame(self)
         moves_frame.pack(side=tk.LEFT, expand=True, fill=tk.BOTH)
-        tk.Label(moves_frame, text='Moves made').pack()
+        tk.Label(moves_frame, text="Moves made").pack()
 
         self._moves_label = tk.Label(moves_frame)
         self._moves_label.pack()
 
     def set_time(self, mins, seconds):
-        """ Updates the time on the timer label.
+        """Updates the time on the timer label.
 
         Parameters:
             mins (int): Number of minutes elapsed.
             seconds (int): Number of seconds elapsed.
         """
-        self._time_label.config(text=f'{mins} mins {seconds} seconds')
+        self._time_label.config(text=f"{mins} mins {seconds} seconds")
 
     def set_moves(self, num_moves):
-        """ Updates the moves information.
+        """Updates the moves information.
 
         Parameters:
             num_moves (int): Number of moves made by the player.
         """
-        self._moves_label.config(text=f'{num_moves} moves')
+        self._moves_label.config(text=f"{num_moves} moves")
 
     def _set_up_buttons(self):
-        """ Creates the new game and restart buttons. """
+        """Creates the new game and restart buttons."""
         buttons_frame = tk.Frame(self)
         buttons_frame.pack(side=tk.LEFT, expand=True, fill=tk.BOTH)
 
-        self._restart_game_button = tk.Button(buttons_frame,
-                                              text='Restart Game')
+        self._restart_game_button = tk.Button(buttons_frame, text="Restart Game")
         self._restart_game_button.pack()
-        self._quit_button = tk.Button(buttons_frame, text='Quit Game')
+        self._quit_button = tk.Button(buttons_frame, text="Quit Game")
         self._quit_button.pack()
 
     def set_button_commands(self, restart_command, quit_command):
-        """ Set the commands to call when the buttons are pressed.
+        """Set the commands to call when the buttons are pressed.
 
         Parameters:
             new_game_command (function): The callback for the new game button.
@@ -2624,16 +2634,16 @@ class StatusBar(tk.Frame):
 
 
 class ImageGraphicalInterface(BasicGraphicalInterface):
-    """ An image-based graphical interface for EndOfDayz. """
+    """An image-based graphical interface for EndOfDayz."""
 
     def __init__(self, root, size):
-        """ Constructor for ImageGraphicalInterface.
+        """Constructor for ImageGraphicalInterface.
 
         Parameters:
             root (tk.Tk | tk.Frame): The master frame for this Frame.
             size (int): The number of rows (and height) in the map.
         """
-        super().__init__(root, size, bg='white')
+        super().__init__(root, size, bg="white")
 
         self._status_bar = StatusBar(self._container)
         self._status_bar.pack(side=tk.BOTTOM, fill=tk.X)
@@ -2642,22 +2652,22 @@ class ImageGraphicalInterface(BasicGraphicalInterface):
         self._step_event = None
 
     def _add_title(self):
-        """ Configure the window title and add a new title label. """
+        """Configure the window title and add a new title label."""
         self._root.title(TITLE)
 
         # Resize banner image and draw instead of heading label.
-        image = Image.open('images/banner.png')
+        image = Image.open("images/banner.png")
         banner_size = (INVENTORY_WIDTH + self._size * CELL_SIZE, BANNER_HEIGHT)
         image = image.resize(banner_size, Image.ANTIALIAS)
         self._banner_image = ImageTk.PhotoImage(image=image)
         tk.Label(self._container, image=self._banner_image).pack()
 
     def _get_map(self):
-        """ (ImageMap) Gets the map instance. """
+        """(ImageMap) Gets the map instance."""
         return ImageMap(self._game_frame, self._size)
 
     def _step(self, game):
-        """ The _step method is called every second. This method triggers the
+        """The _step method is called every second. This method triggers the
             step method for all entities and updates the view accordingly.
 
         Parameters:
@@ -2668,7 +2678,7 @@ class ImageGraphicalInterface(BasicGraphicalInterface):
         super()._step(game)
 
     def _draw_background(self):
-        """ Handles drawing the background for the whole grid. """
+        """Handles drawing the background for the whole grid."""
         for i in range(self._size):
             for j in range(self._size):
                 self._grid.draw_entity((i, j), BACK_GROUND)
@@ -2685,14 +2695,13 @@ class ImageGraphicalInterface(BasicGraphicalInterface):
 
         filemenu = tk.Menu(menubar, tearoff=0)
         menubar.add_cascade(label="File", menu=filemenu)
-        filemenu.add_command(label="Restart game",
-                             command=lambda: self.restart_game(game))
+        filemenu.add_command(
+            label="Restart game", command=lambda: self.restart_game(game)
+        )
         filemenu.add_separator()
 
-        filemenu.add_command(label="Load game",
-                             command=lambda: self.load_game(game))
-        filemenu.add_command(label="Save game",
-                             command=lambda: self.save_game(game))
+        filemenu.add_command(label="Load game", command=lambda: self.load_game(game))
+        filemenu.add_command(label="Save game", command=lambda: self.save_game(game))
         filemenu.add_separator()
 
         filemenu.add_command(label="High scores", command=self.high_scores)
@@ -2712,27 +2721,28 @@ class ImageGraphicalInterface(BasicGraphicalInterface):
         self.high_scores_prompt(game)
 
     def high_scores(self):
-        """ Displays high scores table. """
+        """Displays high scores table."""
         HighScoresTable(self._root)
 
     def high_scores_prompt(self, game):
-        """ Prompting for users name, and logging to high scores file. """
+        """Prompting for users name, and logging to high scores file."""
         prompt = HighScorePrompt(
             self._root,
             game.get_steps(),
-            restart_callback=lambda: self.restart_game(game))
+            restart_callback=lambda: self.restart_game(game),
+        )
         prompt.set_focus()
         prompt.wm_transient(self._root)
         self._root.wait_window(prompt)
 
     def _handle_loss(self):
-        """ Handles loss behaviour. """
+        """Handles loss behaviour."""
         self._root.update()  # For Mac to update GUI before showing message.
-        messagebox.showinfo('Game Over', 'You lose!')
+        messagebox.showinfo("Game Over", "You lose!")
 
     def restart_game(self, game):
-        """ Restarts the current game (including statusbar info).
-        
+        """Restarts the current game (including statusbar info).
+
         Parameters:
             game (Game): Current game instance.
         """
@@ -2744,10 +2754,10 @@ class ImageGraphicalInterface(BasicGraphicalInterface):
         self.resume(game)
 
     def quit_game(self):
-        """ Prompts the user for whether they really want to quit and ends
-            the program if they do.
+        """Prompts the user for whether they really want to quit and ends
+        the program if they do.
         """
-        if messagebox.askyesno('Quit?', 'Do you really want to quit?'):
+        if messagebox.askyesno("Quit?", "Do you really want to quit?"):
             self._root.destroy()
 
     def load_game(self, game: RestartableGame):
@@ -2757,40 +2767,43 @@ class ImageGraphicalInterface(BasicGraphicalInterface):
         Parameters:
             game: game whose state is to be changed after loading
         """
-        filename = filedialog.askopenfilename(initialdir=".",
-                                              title="Save game",
-                                              filetypes=[("Text", "*.txt")],
-                                              defaultextension="txt")
+        filename = filedialog.askopenfilename(
+            initialdir=".",
+            title="Save game",
+            filetypes=[("Text", "*.txt")],
+            defaultextension="txt",
+        )
         with open(filename) as file:
             try:
                 game.apply_state(GameState.deserialise(file.read()))
                 self.draw(game)
             except (IndexError, ValueError) as e:
                 print("Invalid", e)
-                messagebox.showerror("Invalid file format",
-                                     "Invalid file format")
+                messagebox.showerror("Invalid file format", "Invalid file format")
         self._root.grab_set()
 
     def save_game(self, game):
-        """ Prompts the user with a filedialog and saves the game to the
-            requested location.
+        """Prompts the user with a filedialog and saves the game to the
+        requested location.
 
-            Simple error handling is expected.
+        Simple error handling is expected.
 
-            Intentionally not implemented in sample solution; follow whatever
-            approach the student is suggesting (they need to do most of this
-            themselves).
+        Intentionally not implemented in sample solution; follow whatever
+        approach the student is suggesting (they need to do most of this
+        themselves).
         """
-        filename = filedialog.asksaveasfilename(initialdir=".",
-                                                title="Save game",
-                                                filetypes=[("Text", "*.txt")],
-                                                defaultextension="txt")
+        filename = filedialog.asksaveasfilename(
+            initialdir=".",
+            title="Save game",
+            filetypes=[("Text", "*.txt")],
+            defaultextension="txt",
+        )
         with open(filename, "w") as file:
             file.write(GameState(game).serialise())
         self._root.grab_set()
 
     def _move(self, game, direction):
-        """ Handles player move.
+        """Handles player move.
 
         Parameters:
             game (Game): The current game.
@@ -2800,13 +2813,14 @@ class ImageGraphicalInterface(BasicGraphicalInterface):
         self._status_bar.set_moves(game.get_move_count())
 
     def play(self, game):
-        """ Binds events and initializes gameplay.
+        """Binds events and initializes gameplay.
 
         Parameters:
             game (Game): The game instance.
         """
-        self._status_bar.set_button_commands(lambda: self.restart_game(game),
-                                             self.quit_game)
+        self._status_bar.set_button_commands(
+            lambda: self.restart_game(game), self.quit_game
+        )
         self._set_up_file_menu(game)
         super().play(game)
 
@@ -2832,24 +2846,24 @@ class HighScorePrompt(tk.Toplevel):
         tk.Label(self, text=message).pack()
 
         self._name_entry = tk.Entry(self)
-        self._name_entry.bind('<Return>', lambda e: self.save_score())
+        self._name_entry.bind("<Return>", lambda e: self.save_score())
         self._name_entry.pack()
 
         btn_frame = tk.Frame(self)
         btn_frame.pack(ipady=5)
 
-        tk.Button(btn_frame,
-                  text="Enter",
-                  command=self.save_score).pack(side=tk.LEFT, padx=5)
-        tk.Button(btn_frame, text="Enter and play again",
-                  command=self.save_score_and_restart).pack(side=tk.LEFT,
-                                                            padx=5)
+        tk.Button(btn_frame, text="Enter", command=self.save_score).pack(
+            side=tk.LEFT, padx=5
+        )
+        tk.Button(
+            btn_frame, text="Enter and play again", command=self.save_score_and_restart
+        ).pack(side=tk.LEFT, padx=5)
 
     def set_focus(self):
         self._name_entry.focus_set()
 
     def save_score(self):
-        """ Logs users score in high scores file if it's part of the top 3. """
+        """Logs users score in high scores file if it's part of the top 3."""
         scores = []
         # Open high scores file and populate score list.
         try:
@@ -2879,10 +2893,10 @@ class HighScorePrompt(tk.Toplevel):
 
 
 class HighScoresTable(tk.Toplevel):
-    """ A Toplevel window for displaying top 3 high scores. """
+    """A Toplevel window for displaying top 3 high scores."""
 
     def __init__(self, master, file=HIGH_SCORES_FILE):
-        """ Constructor for HighScoresTable.
+        """Constructor for HighScoresTable.
         Parameters:
             file (str): Name of high scores file.
         """
@@ -2893,8 +2907,8 @@ class HighScoresTable(tk.Toplevel):
             text="High Scores",
             bg=ACCENT_COLOUR,
             relief=tk.RAISED,
-            fg='white',
-            font=('Arial', 28)
+            fg="white",
+            font=("Arial", 28),
         ).pack()
 
         try:
@@ -2904,8 +2918,7 @@ class HighScoresTable(tk.Toplevel):
                     score = int(score)
                     mins, seconds = score // 60, score % 60
                     mins_formatted = f"{mins}m " if mins != 0 else ""
-                    tk.Label(self,
-                             text=f"{name}: {mins_formatted}{seconds}s").pack()
+                    tk.Label(self, text=f"{name}: {mins_formatted}{seconds}s").pack()
 
             tk.Button(self, text="Done", command=self.destroy).pack()
         except FileNotFoundError:
@@ -2929,7 +2942,7 @@ def main() -> None:
     game = advanced_game(MAP_FILE)
 
     root = tk.Tk()
-    root.title('EndOfDayz')
+    root.title("EndOfDayz")
     if TASK == 1:
         gui = BasicGraphicalInterface
     elif TASK == 2:
@@ -2939,5 +2952,5 @@ def main() -> None:
     app.play(game)
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     main()

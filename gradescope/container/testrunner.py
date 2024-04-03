@@ -9,10 +9,7 @@ def test_file(file):
     try:
         results = json.loads(output)
     except JSONDecodeError:
-        print(json.dumps({
-            "score": 0,
-            "output": f"unable to decode json: {output}"
-        }))
+        print(json.dumps({"score": 0, "output": f"unable to decode json: {output}"}))
         return None
 
     if "tests" not in results:
@@ -21,6 +18,7 @@ def test_file(file):
 
     return results["tests"]
 
+
 def main():
     task1 = test_file("task1.py")
     task2 = test_file("task2.py")
@@ -28,9 +26,7 @@ def main():
     if task1 is None or task2 is None:
         return
 
-    print(json.dumps({
-        "tests": task1 + task2
-    }))
+    print(json.dumps({"tests": task1 + task2}))
 
 
 if __name__ == "__main__":

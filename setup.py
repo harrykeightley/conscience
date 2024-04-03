@@ -8,7 +8,7 @@ setup(
     name="director-tester",
     version="0.0.1",
     packages=[
-        'director',
+        "director",
     ],
     install_requires=["behave", "Pillow"],
     description="Perform automated testing of Tkinter GUI applications",

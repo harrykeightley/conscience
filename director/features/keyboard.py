@@ -35,11 +35,23 @@ def keypress_func(key_binds):
     # build a mapping of keys to all the possible variations of their binding
     key_calls = defaultdict(list)
     for key in ("w", "a", "s", "d"):
-        for keybind in (key, key.upper(), key.capitalize(),
-                        f"<{key}>", f"<{key.upper()}>", f"<{key.capitalize()}>",
-                        f"<Key-{key}>", f"<Key-{key.upper()}>", f"<Key-{key.capitalize()}>",
-                        f"<KeyRelease-{key}>", f"<KeyRelease-{key.upper()}>", f"<KeyRelease-{key.capitalize()}>",
-                        f"<KeyPress-{key}>", f"<KeyPress-{key.upper()}>", f"<KeyPress-{key.capitalize()}>"):
+        for keybind in (
+            key,
+            key.upper(),
+            key.capitalize(),
+            f"<{key}>",
+            f"<{key.upper()}>",
+            f"<{key.capitalize()}>",
+            f"<Key-{key}>",
+            f"<Key-{key.upper()}>",
+            f"<Key-{key.capitalize()}>",
+            f"<KeyRelease-{key}>",
+            f"<KeyRelease-{key.upper()}>",
+            f"<KeyRelease-{key.capitalize()}>",
+            f"<KeyPress-{key}>",
+            f"<KeyPress-{key.upper()}>",
+            f"<KeyPress-{key.capitalize()}>",
+        ):
             keycb = key_binds.get(keybind)
             if keycb is not None:
                 key_calls[key].append(keycb)
@@ -60,13 +72,18 @@ def keypress_func(key_binds):
         # fail if no call was found
         if not found_call:
             print(key_binds)
-            assert False, f"unable to find an appropriate keyboard binding to call for {event.keysym.lower()}"
-    
+            assert (
+                False
+            ), f"unable to find an appropriate keyboard binding to call for {event.keysym.lower()}"
+
     return callback
+
 
 def press(context, key):
     if len(context.key_binds.logs) == 0:
-        assert False, "no calls made to the tkinter bind method, see: https://web.archive.org/web/20171112175007/http://www.effbot.org/tkinterbook/widget.htm#Tkinter.Widget.bind-method"
+        assert (
+            False
+        ), "no calls made to the tkinter bind method, see: https://web.archive.org/web/20171112175007/http://www.effbot.org/tkinterbook/widget.htm#Tkinter.Widget.bind-method"
 
     method_calls = context.key_binds.logs
 
@@ -75,12 +92,13 @@ def press(context, key):
         positional_arguments = call[0]
 
         if len(positional_arguments) < 2:
-            assert False, f"call to bind does not specify a key and a callback, got: bind({', '.join(positional_arguments)})"
-        
+            assert (
+                False
+            ), f"call to bind does not specify a key and a callback, got: bind({', '.join(positional_arguments)})"
+
         key_bind = positional_arguments[0]
         callback = positional_arguments[1]
 
         key_binds[key_bind] = callback
 
     keypress_func(key_binds)(key)
-

@@ -1,5 +1,6 @@
 class AfterSimulator:
     """Simulates .after bindings in tkinter"""
+
     def __init__(self) -> None:
         self._bind_id = 0
         self._bindings = []
@@ -14,7 +15,7 @@ class AfterSimulator:
                     callback()
                     self._bindings.pop(0)
             self._step += 1
-        
+
     def after(self, time, callback):
         self._bind_id += 1
         self._bindings.append((self._bind_id, self._step + time, callback))
@@ -28,4 +29,3 @@ class AfterSimulator:
 
         for i in to_remove:
             removed = self._bindings.pop(i)
-

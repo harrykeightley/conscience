@@ -1,5 +1,6 @@
 import tkinter as tk
 from tkinter import messagebox
+
 """
 A model of a Hacker puzzle game where the player must collect
 enough green blobs whilst destroying red blobs to win game.
@@ -17,8 +18,7 @@ BOMB = "O"
 MOVE = (0, -1)
 FIRE = (0, 1)
 ROTATIONS = ((-1, 0), (1, 0))
-SPLASH = ((0, 1), (1, 1), (-1, 1), (-1, -1), (1, -1), (0, -1),
-          (1, 0), (-1, 0))
+SPLASH = ((0, 1), (1, 1), (-1, 1), (-1, -1), (1, -1), (0, -1), (1, 0), (-1, 0))
 LEFT = "A"
 RIGHT = "D"
 DIRECTIONS = (LEFT, RIGHT)
@@ -34,22 +34,27 @@ BAR_HEIGHT = 150
 
 TASK = 2
 TITLE = "HACKER"
-COLOURS = {COLLECTABLE: "#9FD7D5",
-           DESTROYABLE: "#F93A3A",
-           BLOCKER: "#B2B2B2",
-           PLAYER: "#A482DB",
-           BOMB: "#FF7324"}
+COLOURS = {
+    COLLECTABLE: "#9FD7D5",
+    DESTROYABLE: "#F93A3A",
+    BLOCKER: "#B2B2B2",
+    PLAYER: "#A482DB",
+    BOMB: "#FF7324",
+}
 
 ZONE = "#2D3332"
 SCORE_COLOUR = "#332027"
 
-IMAGES = {COLLECTABLE: "C.png",
-           DESTROYABLE: "D.png",
-           BLOCKER: "B.png",
-           PLAYER: "P.png",
-           BOMB: "O.png"}
+IMAGES = {
+    COLLECTABLE: "C.png",
+    DESTROYABLE: "D.png",
+    BLOCKER: "B.png",
+    PLAYER: "P.png",
+    BOMB: "O.png",
+}
 
 GRID_SIZE = 7
+
 
 class Position:
     """
@@ -561,7 +566,6 @@ class Game:
                 buff_pos, buff_ent = buffer
                 self._grid.add_entity(buff_pos, buff_ent)
 
-
         """ ANOTHER WAY OF DOING THIS FUNCTION """
         # buffer = []
         # original = []
@@ -766,7 +770,7 @@ class MastersGame(Game):
             return Bomb()
         return super()._create_entity(display)
 
-    def generate_blobs(self) -> None :
+    def generate_blobs(self) -> None:
         """
         Method given to the students to generate a random amount of Entities to
         add into the game after each step
@@ -797,7 +801,6 @@ class MastersGame(Game):
             position = Position(pos, self.get_grid().get_size() - 1)
             new_entity = self._create_entity(entity)
             self.get_grid().add_entity(position, new_entity)
-
 
     def fire(self, shot_type: str) -> None:
         """
@@ -833,20 +836,21 @@ class MastersGame(Game):
                     self._grid.remove_entity(fire)
 
                     if isinstance(entity, Bomb):
-                        offsets = ((0, 1),
-                                   (1, 1),
-                                   (-1, 1),
-                                   (-1, -1),
-                                   (1, -1),
-                                   (0, -1),
-                                   (1, 0),
-                                   (-1, 0))
+                        offsets = (
+                            (0, 1),
+                            (1, 1),
+                            (-1, 1),
+                            (-1, -1),
+                            (1, -1),
+                            (0, -1),
+                            (1, 0),
+                            (-1, 0),
+                        )
 
                         for x, y in offsets:
                             pos = Position(x, y)
                             current = fire.add(pos)
                             self._grid.remove_entity(current)
-
 
                     # Check and update destoyable count if applicable
                     if isinstance(entity, Destroyable):
@@ -861,7 +865,7 @@ class AbstractField(tk.Canvas):
     """Support for creation of and annotation on Fields."""
 
     def __init__(self, master, rows, cols, width, height, **kwargs):
-        """ Constructor for AbstractGrid.
+        """Constructor for AbstractGrid.
         Parameters:
             master (tk.Tk | tk.Frame): The master frame for this Canvas.
             rows (int): Number of rows.
@@ -876,7 +880,7 @@ class AbstractField(tk.Canvas):
         self._cell_height = height / rows
 
     def get_bbox(self, position):
-        """ Returns the bounding box of the given (row, col) position.
+        """Returns the bounding box of the given (row, col) position.
         Parameters:
             position (tuple<int, int>): The (row, col) cell position.
         Returns:
@@ -889,7 +893,7 @@ class AbstractField(tk.Canvas):
         return x_min, y_min, x_max, y_max
 
     def pixel_to_position(self, pixel):
-        """ Converts the x, y pixel position to a (row, col) position.
+        """Converts the x, y pixel position to a (row, col) position.
         Parameters:
             pixel (tuple<int, int>): x, y position.
         Returns:
@@ -899,7 +903,7 @@ class AbstractField(tk.Canvas):
         return y_coord // self._cell_height, x_coord // self._cell_width
 
     def get_position_center(self, position):
-        """ Gets the graphics coordinates for the center of the cell at the
+        """Gets the graphics coordinates for the center of the cell at the
             given (row, col) position.
         Parameters:
             position (tuple<int, int>): The (row, col) cell position.
@@ -912,7 +916,7 @@ class AbstractField(tk.Canvas):
         return x_pos, y_pos
 
     def annotate_position(self, position, text):
-        """ Annotates the cell at the given (row, col) position with the
+        """Annotates the cell at the given (row, col) position with the
             provided text.
         Parameters:
             position (tuple<int, int>): The (row, col) cell position.
@@ -925,19 +929,16 @@ class HackingView(AbstractField):
     """A display of the Hacker game field."""
 
     def __init__(self, root, size, width, height, **kwargs):
-        """ Constructor for HackingView.
+        """Constructor for HackingView.
         Parameters:
             root (tk.Tk | tk.Frame): The root frame for this Canvas.
             size (int): The number of rows (= #columns) in this map.
             width (int): Width of the entire View canvas.
             height (int): Height of the entire View canvas.
         """
-        super().__init__(root,
-                         rows=size,
-                         cols=size,
-                         width=width,
-                         height=height,
-                         **kwargs)
+        super().__init__(
+            root, rows=size, cols=size, width=width, height=height, **kwargs
+        )
 
     def draw_player_bar(self):
         """
@@ -970,21 +971,23 @@ class ScoreBar(AbstractField):
     """
 
     def __init__(self, root, rows, **kwargs):
-        """ Constructor for InventoryView.
+        """Constructor for InventoryView.
         Parameters:
             root (tk.Tk | tk.Frame): The root frame for this canvas.
             rows (int): #rows to allow in this scorebar.
         """
-        super().__init__(root, rows=rows,
-                         cols=2,
-                         width=SCORE_WIDTH,
-                         height=MAP_HEIGHT,
-                         bg=SCORE_COLOUR,
-                         **kwargs)
+        super().__init__(
+            root,
+            rows=rows,
+            cols=2,
+            width=SCORE_WIDTH,
+            height=MAP_HEIGHT,
+            bg=SCORE_COLOUR,
+            **kwargs,
+        )
 
     def generate_labels(self, current_score):
         return ["Collected:", "Destroyed:"]
-
 
     def draw(self, current_score: Tuple[int, int]):
         """
@@ -996,8 +999,9 @@ class ScoreBar(AbstractField):
         # Draw header
         middle_x, *_ = self.get_bbox((0, 1))
         _, middle_y = self.get_position_center((0, 0))
-        self.create_text(middle_x, middle_y, text='Score', fill="#FFFFFF",
-                         font=('Arial', 22))
+        self.create_text(
+            middle_x, middle_y, text="Score", fill="#FFFFFF", font=("Arial", 22)
+        )
 
         # Iteratively display stats
         labels = self.generate_labels(current_score)
@@ -1006,6 +1010,7 @@ class ScoreBar(AbstractField):
             score_pos = self.get_position_center((i + 1, 1))
             self.create_text(label_pos, text=labels[i], fill="white")
             self.create_text(score_pos, text=str(score), fill="white")
+
 
 class HackerController:
     """
@@ -1018,11 +1023,7 @@ class HackerController:
         title_frame.pack(fill=tk.X)
 
         title = tk.Label(
-            title_frame,
-            text=TITLE,
-            bg="#222222",
-            fg="white",
-            font=('Arial', 28)
+            title_frame, text=TITLE, bg="#222222", fg="white", font=("Arial", 28)
         )
         title.pack(fill=tk.X)
 
@@ -1033,8 +1034,10 @@ class HackerController:
         self._hack_view.draw_player_bar()
         entities = self._model.get_grid().serialise()
         self._hack_view.draw_grid(entities)
-        score = (self._model.get_collectable_amount(),
-                 self._model.get_destroyable_amount())
+        score = (
+            self._model.get_collectable_amount(),
+            self._model.get_destroyable_amount(),
+        )
 
         self._score_view.draw(score)
 
@@ -1042,8 +1045,9 @@ class HackerController:
         """Setup Hacking and Score view components and visuals."""
         view_frame = tk.Frame(self._root)
         view_frame.pack()
-        self._hack_view = HackingView(view_frame, self._size, MAP_WIDTH,
-                                      MAP_HEIGHT, bg=ZONE)
+        self._hack_view = HackingView(
+            view_frame, self._size, MAP_WIDTH, MAP_HEIGHT, bg=ZONE
+        )
         self._hack_view.pack(side=tk.LEFT)
         self._score_view = ScoreBar(view_frame, COLLECTION_TARGET)
         self._score_view.pack(side=tk.LEFT)
@@ -1051,14 +1055,14 @@ class HackerController:
 
     def _event_setup(self):
         """Bind root window to a key press event"""
-        self._root.bind('<KeyPress>', self.handle_keypress)
+        self._root.bind("<KeyPress>", self.handle_keypress)
         self._root.after(1000, self.step)
 
     def _game_selection(self):
         self._model = Game(self._size)
 
     def __init__(self, root, size):
-        """ Constructor for HackerController.
+        """Constructor for HackerController.
         Parameters:
             root (tk.Tk | tk.Frame): The master frame for this Frame.
             size (int): The number of rows (and columns) in the map.
@@ -1113,7 +1117,7 @@ class HackerController:
             self.handle_win()
 
     def pop_up(self, msg):
-        messagebox.showinfo('Game Over', f'You {msg}!')
+        messagebox.showinfo("Game Over", f"You {msg}!")
 
     def show_window(self, has_won):
         if has_won:
@@ -1132,15 +1136,16 @@ class HackerController:
         self._root.update()  # For mac to update GUI before showing message
         self.show_window(False)
         self._root.destroy()
-        
+
+
 from PIL import ImageTk, Image
 
 
 class ImageHackingView(HackingView):
-    """ An image-based display for the game map. """
+    """An image-based display for the game map."""
 
     def __init__(self, root, size, width, height, **kwargs):
-        """ Constructor for HackingView.
+        """Constructor for HackingView.
         Parameters:
             root (tk.Tk | tk.Frame): The root frame for this Canvas.
             size (int): The number of rows (= #columns) in this map.
@@ -1151,14 +1156,13 @@ class ImageHackingView(HackingView):
         self._images = {}
 
     def draw_grid(self, entities):
-        """ Draws the entity using a sprite image."""
+        """Draws the entity using a sprite image."""
         for pos, ent in entities.items():
             pixel = self.get_position_center(pos[::-1])
             self.create_image(*pixel, image=self.get_image(ent))
 
-
     def get_image(self, tile_type, angle=0):
-        """ Gets the image for the entity of given type. Creates a new image
+        """Gets the image for the entity of given type. Creates a new image
             if one doesn't exist for this entity and stores a reference to it.
         Parameters:
             tile_type (str): ID of the entity.
@@ -1168,12 +1172,12 @@ class ImageHackingView(HackingView):
         cache_id = f"{tile_type}.png"
         if cache_id not in self._images:
             image = ImageTk.PhotoImage(
-                image=Image.open("images/" + IMAGES.get(tile_type)).rotate(angle).resize(
-                    (int(self._cell_width), int(self._cell_height))))
+                image=Image.open("images/" + IMAGES.get(tile_type))
+                .rotate(angle)
+                .resize((int(self._cell_width), int(self._cell_height)))
+            )
             self._images[cache_id] = image
         return self._images[cache_id]
-
-
 
 
 class StatusBar(tk.Frame):
@@ -1181,7 +1185,7 @@ class StatusBar(tk.Frame):
     def _setup_timer(self):
         timer_frame = tk.Frame(self)
         timer_frame.pack(side=tk.LEFT, expand=True, fill=tk.BOTH)
-        tk.Label(timer_frame, text='Timer').pack()
+        tk.Label(timer_frame, text="Timer").pack()
 
         self._time_label = tk.Label(timer_frame)
         self._time_label.pack()
@@ -1189,16 +1193,16 @@ class StatusBar(tk.Frame):
     def _setup_moves(self):
         move_frame = tk.Frame(self)
         move_frame.pack(side=tk.LEFT, expand=True, fill=tk.BOTH)
-        tk.Label(move_frame, text='Total Shots').pack()
+        tk.Label(move_frame, text="Total Shots").pack()
 
         self._shot_label = tk.Label(move_frame)
         self._shot_label.pack()
 
     def _setup_pause_play(self):
-        """ Creates the pause and play buttons. """
+        """Creates the pause and play buttons."""
         buttons_frame = tk.Frame(self)
         buttons_frame.pack(side=tk.LEFT, expand=True, fill=tk.X)
-        self._play_button = tk.Button(buttons_frame, text='Pause')
+        self._play_button = tk.Button(buttons_frame, text="Pause")
         self._play_button.pack()
 
     def __init__(self, root, *args, **kwargs):
@@ -1226,8 +1230,9 @@ class AdvancedHackerController(HackerController):
         """Setup Hacking and Score view components and visuals."""
         view_frame = tk.Frame(self._root)
         view_frame.pack()
-        self._hack_view = ImageHackingView(view_frame, self._size, MAP_WIDTH,
-                                           MAP_HEIGHT, bg="#2D3332")
+        self._hack_view = ImageHackingView(
+            view_frame, self._size, MAP_WIDTH, MAP_HEIGHT, bg="#2D3332"
+        )
         self._hack_view.pack(side=tk.LEFT)
         self._score_view = ScoreBar(view_frame, COLLECTION_TARGET)
         self._score_view.pack(side=tk.LEFT)
@@ -1244,23 +1249,17 @@ class AdvancedHackerController(HackerController):
 
         filemenu = tk.Menu(menubar, tearoff=0)
         menubar.add_cascade(label="File", menu=filemenu)
-        filemenu.add_command(label="Save game",
-                             command=self.save_game)
-        filemenu.add_command(label="Load game",
-                             command=self.load_game)
-        filemenu.add_command(label="Restart game",
-                             command=self.restart_game)
+        filemenu.add_command(label="Save game", command=self.save_game)
+        filemenu.add_command(label="Load game", command=self.load_game)
+        filemenu.add_command(label="Restart game", command=self.restart_game)
 
         filemenu.add_separator()
-        filemenu.add_command(label="Quit",
-                             command=self.quit)
+        filemenu.add_command(label="Quit", command=self.quit)
 
     def __init__(self, root, size):
         super().__init__(root, size)
 
-        self._status_bar = StatusBar(root,
-                               height=BAR_HEIGHT,
-                               width=MAP_WIDTH)
+        self._status_bar = StatusBar(root, height=BAR_HEIGHT, width=MAP_WIDTH)
         self._status_bar.pack(side=tk.TOP, fill=tk.BOTH, expand=True)
 
         self._set_up_file_menu()
@@ -1319,7 +1318,7 @@ class AdvancedHackerController(HackerController):
 
     def quit(self):
         self.pause()
-        if messagebox.askyesno('Quit?', 'Do you really want to quit?'):
+        if messagebox.askyesno("Quit?", "Do you really want to quit?"):
             self._root.destroy()
         else:
             self.unpause()
@@ -1341,7 +1340,6 @@ class AdvancedHackerController(HackerController):
         super().handle_loss()
 
 
-
 class MasterScoreBar(ScoreBar):
 
     def generate_labels(self, current_score):
@@ -1357,8 +1355,9 @@ class MasterHackerController(AdvancedHackerController):
         """Setup Hacking and Score view components and visuals."""
         view_frame = tk.Frame(self._root)
         view_frame.pack()
-        self._hack_view = ImageHackingView(view_frame, self._size, MAP_WIDTH,
-                                      MAP_HEIGHT, bg="#2D3332")
+        self._hack_view = ImageHackingView(
+            view_frame, self._size, MAP_WIDTH, MAP_HEIGHT, bg="#2D3332"
+        )
         self._hack_view.pack(side=tk.LEFT)
         self._score_view = MasterScoreBar(view_frame, COLLECTION_TARGET)
         self._score_view.pack(side=tk.LEFT)
@@ -1370,9 +1369,11 @@ class MasterHackerController(AdvancedHackerController):
         self._hack_view.draw_player_bar()
         entities = self._model.get_grid().serialise()
         self._hack_view.draw_grid(entities)
-        score = (self._model.get_collectable_amount(),
-                 self._model.get_destroyable_amount(),
-                 self._model.get_lives())
+        score = (
+            self._model.get_collectable_amount(),
+            self._model.get_destroyable_amount(),
+            self._model.get_lives(),
+        )
 
         self._score_view.draw(score)
 
@@ -1389,6 +1390,7 @@ def start_game(root, TASK=TASK):
     app = controller(root, GRID_SIZE)
     return app
 
+
 def main():
     root = tk.Tk()
     root.title(TITLE)
@@ -1396,5 +1398,5 @@ def main():
     root.mainloop()
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     main()

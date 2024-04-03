@@ -7,20 +7,27 @@ register_formats()
 
 
 def assertEquals(expected, actual):
-    assert actual == expected, "\n" + "".join(ndiff(actual.splitlines(keepends=True), expected.splitlines(keepends=True)))
+    assert actual == expected, "\n" + "".join(
+        ndiff(actual.splitlines(keepends=True), expected.splitlines(keepends=True))
+    )
 
-@then("I see text displaying, roughly, \"{text:Text}\"")
+
+@then('I see text displaying, roughly, "{text:Text}"')
 def rough_text(context, text):
     search_for = text.lower().strip()
     widgets = find_widgets(WidgetSelector.by_rough_text(search_for), context.window)
-    assert len(widgets) == 1, f"cannot find exactly one widget roughly matching the text \"{text}\", found {widgets}"
+    assert (
+        len(widgets) == 1
+    ), f'cannot find exactly one widget roughly matching the text "{text}", found {widgets}'
     context.last = widgets[0]
 
 
 @then("I see text displaying, exactly, {text:Text}")
 def exact_text(context, text):
     widgets = find_widgets(WidgetSelector.by_text(text), context.window)
-    assert len(widgets) == 1, f"cannot find exactly one widget exactly matching the text \"{text}\", found {widgets}"
+    assert (
+        len(widgets) == 1
+    ), f'cannot find exactly one widget exactly matching the text "{text}", found {widgets}'
     context.last = widgets[0]
 
 
@@ -51,7 +58,7 @@ class SerializedGrid:
     def orient(self):
         """
         Attempt to orient the grid based on a known fixed point
-        
+
         Fails via assert and returns None if unable to orient.
         Returns the pixel x and y size of the grid cells.
         """
@@ -59,7 +66,7 @@ class SerializedGrid:
 
     def get_cell_size(self):
         return self.orient()
-    
+
     def get_grid_dimensions(self):
         x_size, y_size = self.orient()
         columns = int(self.grid.winfo_width() // x_size)
@@ -77,7 +84,7 @@ class SerializedGrid:
             start_x - self.CELL_SPACING,
             start_y - self.CELL_SPACING,
             start_x + x_size + self.CELL_SPACING,
-            start_y + y_size + self.CELL_SPACING
+            start_y + y_size + self.CELL_SPACING,
         )
 
     def serialize(self):
@@ -127,7 +134,7 @@ class SerializedGrid:
                 output += f"|{label}"
                 # output += f"{cell_id} "
             output += "|\n"
-        
+
         return output
 
     def to_item_dict(self):

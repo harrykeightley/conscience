@@ -34,7 +34,7 @@ def parse_relative_position(text):
         return RelativePosition.Above
     elif text == "below":
         return RelativePosition.Below
-    return None # not reached
+    return None  # not reached
 
 
 def register_formats():

@@ -17,6 +17,7 @@ warnings = suite.warnings
 warnings.Tk_destroy = "you should not close the window with .destroy - reset the model and redraw the view instead"
 warnings.Widget_destroy = "you should not use the .destroy method - gracefully reconfigure the updated widgets using the .config method"
 """
+
 import random
 import tkinter as tk
 import traceback
@@ -33,6 +34,7 @@ def warn(message):
 
     return inner
 
+
 class DirectorSuite:
     def __init__(self, seed=None):
         self.seed = seed
@@ -45,10 +47,10 @@ class DirectorSuite:
 
     def overwrite(self, variable, value):
         self._overwrites[variable] = value
-    
+
     def warn_on(self, clz, method, message):
         self._warnings.append((clz, method, message))
-    
+
     def load(self):
         for feature in self._features:
             feature.on_load(self)
@@ -61,7 +63,7 @@ class DirectorSuite:
                 message += feature_message
 
         return message or None
-    
+
     def start(self, context):
         if self.seed is not None:
             random.seed(self.seed)
@@ -74,7 +76,5 @@ class DirectorSuite:
 
         for feature in self._features:
             feature.on_start(context, self)
-       
-        self.window = tk.Tk()
- 
 
+        self.window = tk.Tk()

@@ -43,15 +43,15 @@ class GradescopeSubmissionMetadata(TypedDict):
 
 def parse_tag_value(scenario: Scenario, tag_name: str, default=None):
     tags = filter(lambda tag: tag.startswith(tag_name), scenario.tags)
-    tags = map(lambda tag: tag[len(tag_name):].strip("()"), tags)
-    tags = filter(lambda tag: tag.lstrip("-").replace('.','',1).isdigit(), tags)
+    tags = map(lambda tag: tag[len(tag_name) :].strip("()"), tags)
+    tags = filter(lambda tag: tag.lstrip("-").replace(".", "", 1).isdigit(), tags)
 
     return float(next(tags, default))
 
 
 def has_tag(scenario: Scenario, tag_name: str) -> bool:
     tags = filter(lambda tag: tag == tag_name, scenario.tags)
-    
+
     return bool(next(tags, None))
 
 
@@ -63,9 +63,7 @@ class GradescopeFormatter(Formatter):
         super().__init__(stream_opener, config)
 
         self._tests = []
-        self._results = {
-            "tests": self._tests
-        }
+        self._results = {"tests": self._tests}
 
         self._determine_student_type()
         self.reset(None)
@@ -86,30 +84,36 @@ class GradescopeFormatter(Formatter):
         with open(self.config.student_categories) as f:
             category_data = csv.DictReader(f)
             for entry in category_data:
-                student_email = entry['email']
+                student_email = entry["email"]
                 if submission_email != student_email:
                     continue
 
                 self.type = entry
-        
+
         if self.type is None:
             log = f"Unable to find submission metadata for {submission_email}"
         else:
             log = f"Submission metadata\n{self.type}"
 
-        self._tests.append({
-            "score": 0,
-            "max_score": 0,
-            "name": f"Metadata Debug",
-            "output": log,
-            "visibility": "hidden",
-        })
+        self._tests.append(
+            {
+                "score": 0,
+                "max_score": 0,
+                "name": f"Metadata Debug",
+                "output": log,
+                "visibility": "hidden",
+            }
+        )
 
     def _format_test_name(self, scenario: Scenario):
         return f"{scenario.name} ({scenario.feature.name})"
 
     def _format_step_name(self, step: Step):
-        status = {Status.passed.value: "✅", Status.failed.value: "❌", Status.skipped.value: "⏭ "}.get(step.status.value, "")
+        status = {
+            Status.passed.value: "✅",
+            Status.failed.value: "❌",
+            Status.skipped.value: "⏭ ",
+        }.get(step.status.value, "")
         prepend = {Status.skipped.value: " (skipped)"}.get(step.status.value, "")
 
         result = f"{status} {step.keyword} {step.name}{prepend}"
@@ -130,11 +134,19 @@ class GradescopeFormatter(Formatter):
         if self.type is not None:
             postgrad = self.type.get("postgrad", False)
             if postgrad:
-                adjustment = parse_tag_value(self._current_scenario, "postgradAdjust", 0)
+                adjustment = parse_tag_value(
+                    self._current_scenario, "postgradAdjust", 0
+                )
                 weight += adjustment
 
-        if self._current_scenario.status == Status.skipped or self._current_scenario.feature.status == Status.skipped:
-            reason = self._current_scenario.skip_reason or self._current_scenario.feature.skip_reason
+        if (
+            self._current_scenario.status == Status.skipped
+            or self._current_scenario.feature.status == Status.skipped
+        ):
+            reason = (
+                self._current_scenario.skip_reason
+                or self._current_scenario.feature.skip_reason
+            )
             return {
                 "score": 0,
                 "max_score": weight,
@@ -142,7 +154,7 @@ class GradescopeFormatter(Formatter):
                 "output": f"⏭  {reason}",
                 "visibility": "visible" if visible else "after_published",
             }
-        
+
         return {
             "score": weight if self._passed else 0,
             "max_score": weight,
@@ -150,7 +162,7 @@ class GradescopeFormatter(Formatter):
             "output": self._output,
             "visibility": "visible" if visible else "after_published",
         }
-    
+
     def scenario(self, scenario: Scenario):
         if self._current_scenario is not None:
             self._tests.append(self._make_test())
@@ -174,8 +186,11 @@ class GradescopeFormatter(Formatter):
             self._output += f"{self._format_step_name(step)}\n"
             return
 
-
-        raw_output = f"output: {step.captured.output}\n" if len(step.captured.output.strip()) > 0 else ""
+        raw_output = (
+            f"output: {step.captured.output}\n"
+            if len(step.captured.output.strip()) > 0
+            else ""
+        )
         self._output += f"""{self._format_step_name(step)}
     {step.error_message}
 """
@@ -184,7 +199,7 @@ class GradescopeFormatter(Formatter):
             self._output += f"    Try these EdStem posts:\n"
             for tag in help_tags:
                 self._output += f"        {tag}\n"
-       
+
         message = self.config.suite.on_fail(self._current_scenario, step)
         if message is not None:
             self._output += f"    {message}\n"

@@ -1,7 +1,9 @@
 """
 Ensure a correct environment has been established
 """
+
 import unittest
+
 
 class TestEnvironment(unittest.TestCase):
 
@@ -27,5 +29,5 @@ class TestEnvironment(unittest.TestCase):
             self.fail("directory library is not accessible")
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     unittest.main()

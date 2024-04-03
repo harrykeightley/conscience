@@ -1,7 +1,8 @@
 from behave import *
-from director import * 
+from director import *
 from director.common import *
 import tkinter as tk
+
 
 class SerializedGrid:
     CELL_SPACING = 0
@@ -12,7 +13,7 @@ class SerializedGrid:
     def orient(self):
         """
         Attempt to orient the grid based on a known fixed point
-        
+
         Fails via assert and returns None if unable to orient.
         Returns the pixel x and y size of the grid cells.
         """
@@ -20,7 +21,7 @@ class SerializedGrid:
 
     def get_cell_size(self):
         return self.orient()
-    
+
     def get_grid_dimensions(self):
         x_size, y_size = self.orient()
         columns = int(self.grid.winfo_width() // x_size)
@@ -38,7 +39,7 @@ class SerializedGrid:
             start_x - self.CELL_SPACING,
             start_y - self.CELL_SPACING,
             start_x + x_size + self.CELL_SPACING,
-            start_y + y_size + self.CELL_SPACING
+            start_y + y_size + self.CELL_SPACING,
         )
 
     def serialize(self):
@@ -88,7 +89,7 @@ class SerializedGrid:
                 output += f"|{label}"
                 # output += f"{cell_id} "
             output += "|\n"
-        
+
         return output
 
     def to_item_dict(self):
@@ -102,4 +103,3 @@ class SerializedGrid:
 
     def debug(self):
         return self.to_item_dict()
-

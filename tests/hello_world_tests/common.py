@@ -1,5 +1,5 @@
 from behave import *
-from director import * 
+from director import *
 from director.common import *
 import tkinter as tk
 

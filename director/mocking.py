@@ -4,6 +4,7 @@ Mock core components of the tkinter library.
 Allows for automated GUI events, such as key presses or
 time steps, to be triggered.
 """
+
 import types
 import functools
 import inspect
@@ -12,12 +13,16 @@ import inspect
 def copy_function(f):
     """
     Perform a deep copy of a python function.
-    
+
     Based on http://stackoverflow.com/a/6528148/190597 (Glenn Maynard)
     """
-    g = types.FunctionType(f.__code__, f.__globals__, name=f.__name__,
-                           argdefs=f.__defaults__,
-                           closure=f.__closure__)
+    g = types.FunctionType(
+        f.__code__,
+        f.__globals__,
+        name=f.__name__,
+        argdefs=f.__defaults__,
+        closure=f.__closure__,
+    )
     g = functools.update_wrapper(g, f)
     g.__kwdefaults__ = f.__kwdefaults__
     return g
@@ -41,6 +46,7 @@ class MixinBase(object):
     >>> mockme.do_it()
     called
     """
+
     def __init__(self, context, reference) -> None:
         assert hasattr(context, reference)
         self._commands = []
@@ -71,7 +77,7 @@ class MixinBase(object):
             return results[0]
         else:
             return results
-    
+
     def restore(self):
         setattr(self._context, self._reference, self._original)
 
@@ -97,6 +103,7 @@ class LogMixin(MixinBase):
     >>> mock.logs
     [(('life',), {'answer': 42}), ((), {})]
     """
+
     def setup(self) -> None:
         self._records = []
         self._records_with_self = []
@@ -132,19 +139,20 @@ class MockMixin(MixinBase):
     >>> mockme.do_it()
     called
     """
+
     def setup(self) -> None:
         self._mocks = []
 
     def register(self, mock):
         self._mocks.append(mock)
-        
+
     def inject(self, *args, **kwargs):
         results = []
         for mock in self._mocks:
             returned = results.append(mock(*args, **kwargs))
             if returned is not None:
                 results.append(returned)
-        
+
         if len(results) == 0:
             return None
         elif len(results) == 1:
@@ -176,11 +184,13 @@ class RelayMixin(MixinBase):
     >>> mock.logs
     [(('life',), {'answer': 42}), ((), {})]
     """
+
     def inject(self, *args, **kwargs):
         self._original(*args, **kwargs)
 
 
 # a couple of useful example mocking classes
+
 
 class VacantLog(LogMixin):
     pass
@@ -192,4 +202,3 @@ class RelayLog(LogMixin, RelayMixin):
 
 class MockLog(LogMixin, MockMixin):
     pass
-

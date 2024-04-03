@@ -9,8 +9,7 @@ BOMB = "O"
 MOVE = (0, -1)
 FIRE = (0, 1)
 ROTATIONS = ((-1, 0), (1, 0))
-SPLASH = ((0, 1), (1, 1), (-1, 1), (-1, -1), (1, -1), (0, -1),
-          (1, 0), (-1, 0))
+SPLASH = ((0, 1), (1, 1), (-1, 1), (-1, -1), (1, -1), (0, -1), (1, 0), (-1, 0))
 LEFT = "A"
 RIGHT = "D"
 DIRECTIONS = (LEFT, RIGHT)
@@ -28,23 +27,27 @@ BAR_HEIGHT = 150
 TASK = 1
 TITLE = "HACKER"
 TITLE_BG = "#222222"
-TITLE_FONT = ('Arial', 28)
+TITLE_FONT = ("Arial", 28)
 
-COLOURS = {COLLECTABLE: "#9FD7D5",
-           DESTROYABLE: "#F93A3A",
-           BLOCKER: "#B2B2B2",
-           PLAYER: "#A482DB",
-           BOMB: "#FF7324"}
+COLOURS = {
+    COLLECTABLE: "#9FD7D5",
+    DESTROYABLE: "#F93A3A",
+    BLOCKER: "#B2B2B2",
+    PLAYER: "#A482DB",
+    BOMB: "#FF7324",
+}
 
 FIELD_COLOUR = "#2D3332"
 SCORE_COLOUR = "#332027"
 PLAYER_AREA = "#8E8E8E"
 
-IMAGES = {COLLECTABLE: "C.png",
-          DESTROYABLE: "D.png",
-          BLOCKER: "B.png",
-          PLAYER: "P.png",
-          BOMB: "O.png"}
+IMAGES = {
+    COLLECTABLE: "C.png",
+    DESTROYABLE: "D.png",
+    BLOCKER: "B.png",
+    PLAYER: "P.png",
+    BOMB: "O.png",
+}
 
 GRID_SIZE = 7
 

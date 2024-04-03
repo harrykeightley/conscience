@@ -5,6 +5,7 @@ within an existing model.
 Allows testing to occur in an environment where no knowledge
 is known about the implementation details of the GUI.
 """
+
 import tkinter as tk
 from typing import List
 from . import logger
@@ -14,7 +15,7 @@ def _widget_selector(parent, selector):
     if selector(parent):
         yield parent
     for child in parent.children.values():
-    #for child in parent.winfo_children(): doesn't work as students override self._root
+        # for child in parent.winfo_children(): doesn't work as students override self._root
         yield from _widget_selector(child, selector)
 
 
@@ -41,7 +42,7 @@ class WidgetSelector:
                 return actual == expected
             except tk.TclError:
                 return False
-        
+
         return f
 
     @staticmethod
@@ -52,7 +53,7 @@ class WidgetSelector:
                 return actual == expected
             except tk.TclError:
                 return False
-        
+
         return f
 
     @staticmethod
@@ -101,7 +102,6 @@ class WidgetSelector:
 
         return f
 
-
     @staticmethod
     def has_text():
         def f(widget):
@@ -110,28 +110,33 @@ class WidgetSelector:
                 return True
             except tk.TclError:
                 return False
+
         return f
 
     @staticmethod
     def by_type(expected):
         def f(widget):
             return isinstance(widget, expected)
+
         return f
 
     @staticmethod
     def by_class_name(expected):
         def f(widget):
             return widget.__class__.__name__ == expected
+
         return f
 
     @staticmethod
     def is_leaf():
         def f(widget):
             return not widget.children
+
         return f
 
     @staticmethod
     def all():
         def f(widget):
             return True
+
         return f

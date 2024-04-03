@@ -32,8 +32,7 @@ class Game:
         #     total_count += 1
         #     entities.append(BOMB)
 
-        entity_index = random.sample(range(self.get_grid().get_size()),
-                                     total_count)
+        entity_index = random.sample(range(self.get_grid().get_size()), total_count)
 
         # Add entities into grid
         for pos, entity in zip(entity_index, entities):
@@ -59,5 +58,5 @@ def main():
     root.mainloop()
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     main()

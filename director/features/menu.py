@@ -7,7 +7,7 @@ from director.common import *
 class FilemenuManager:
     def __init__(self, gui):
         self._gui = gui
-    
+
     def list_menu_children(self, menu, options=["label"]):
         # holy damn they did not want this traversed
         index = 0
@@ -68,11 +68,12 @@ class FilemenuManager:
 def get_filemenu(context):
     manager = FilemenuManager(context.suite.window)
     menu = manager.find_filemenu(context.menus)
-    
+
     if menu is None:
         assert False, f"unable to find a file menu, menus: {context.menus}"
 
     return manager, menu
+
 
 def get_menu_option(context, menu_item):
     manager, menu = get_filemenu(context)
@@ -96,6 +97,5 @@ def load_file_menu_tests():
     @when("I select the {menu_item:Text} menu option")
     def menu_selected(context, menu_item):
         selected_menu = get_menu_option(context, menu_item)
-        
-        selected_menu[2].invoke(selected_menu[0])
 
+        selected_menu[2].invoke(selected_menu[0])

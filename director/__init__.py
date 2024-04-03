@@ -2,10 +2,13 @@ name = "director"
 
 from io import BytesIO, StringIO
 from os import chdir
+from pathlib import Path
 import logging
 import json
 import traceback
-from typing import TypedDict
+from typing import Optional, TypedDict
+
+from director.suite import DirectorSuite
 
 logger = logging.getLogger(__package__)
 debug = logging.getLogger(f"{__package__}.debug")
@@ -24,13 +27,14 @@ from director.formatters import GradescopeFormatter
 
 from .window import *
 
+
 def setup(context):
     context.under_test = context.config.under_test
     context.suite = context.config.suite
     register_formats()
 
 
-def load_under_test(path):
+def load_under_test(path: Path):
     spec = importlib.util.spec_from_file_location("under_test", path)
     foo = importlib.util.module_from_spec(spec)
     spec.loader.exec_module(foo)
@@ -42,8 +46,14 @@ class GradeScopeMetadata(TypedDict):
     student_metadata: str
 
 
-def test(tests, target, working_directory=".", gradescope=False,
-         metadata: GradeScopeMetadata=None, suite=None):
+def test(
+    tests,
+    target,
+    working_directory=".",
+    gradescope=False,
+    metadata: Optional[GradeScopeMetadata] = None,
+    suite: Optional[DirectorSuite] = None,
+):
     extra_args = [] if not gradescope else ["--no-summary"]
     config = Configuration(command_args=["--no-source", "--no-timings"] + extra_args)
     config.steps_dir = "."
@@ -62,11 +72,8 @@ def test(tests, target, working_directory=".", gradescope=False,
     except Exception as e:
         if not gradescope:
             raise e
-        
-        return {
-            "score": 0,
-            "output": traceback.format_exc()
-        }
+
+        return {"score": 0, "output": traceback.format_exc()}
 
     if gradescope:
         if metadata is not None:
@@ -92,12 +99,19 @@ def test(tests, target, working_directory=".", gradescope=False,
         return json.load(output_stream)
     except json.JSONDecodeError:
         output_stream.seek(0)
-        return {
-            "score": 0,
-            "output": output_stream.read()
-        }
+        return {"score": 0, "output": output_stream.read()}
 
 
-__export__ = [MixinBase, LogMixin, RelayMixin, MockMixin, VacantLog, RelayLog, MockLog, WidgetSelector, setup]
-__test__ = {obj.__name__ : obj for obj in __export__}
+__export__ = [
+    MixinBase,
+    LogMixin,
+    RelayMixin,
+    MockMixin,
+    VacantLog,
+    RelayLog,
+    MockLog,
+    WidgetSelector,
+    setup,
+]
+__test__ = {obj.__name__: obj for obj in __export__}
 __all__ = [cls.__name__ for cls in __export__] + ["logger", "find_widgets"]
