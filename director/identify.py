@@ -5,9 +5,11 @@ within an existing model.
 Allows testing to occur in an environment where no knowledge
 is known about the implementation details of the GUI.
 """
-
 import tkinter as tk
 from typing import List
+
+from PIL import ImageTk
+
 from . import logger
 
 
@@ -97,6 +99,19 @@ class WidgetSelector:
                 actual = widget.cget("image")
                 if actual in registry:
                     return registry[actual] == expected
+            except tk.TclError:
+                return False
+
+        return f
+
+    @staticmethod
+    def by_image_name(cache: dict[str, ImageTk.PhotoImage], name: str):
+        def f(widget):
+            try:
+                image = widget.cget("image")
+                if name in cache:
+                    # for some reason tkinter stores only the strings?
+                    return str(cache[name]) == image
             except tk.TclError:
                 return False
 

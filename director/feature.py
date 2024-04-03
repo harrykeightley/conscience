@@ -2,7 +2,6 @@ import tkinter as tk
 from tkinter import messagebox
 from tkinter.commondialog import Dialog
 from tkinter.simpledialog import _QueryDialog
-from behave import *
 from . import *
 from .mocking import copy_function
 from .features.keyboard import Events, press
