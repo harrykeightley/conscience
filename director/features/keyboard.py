@@ -1,33 +1,52 @@
 from collections import defaultdict
+from dataclasses import dataclass
+from enum import Enum
+
+KEY_EVENT_TYPES = ("<KeyPress>", "<Any-KeyPress>", "<Key>", "<KeyRelease>")
+KEY_FORMATS = (
+    "{}",
+    "<{}>",
+    "<Key-{}>",
+    "<KeyRelease-{}>",
+    "<KeyPress-{}>",
+)
 
 
-class Event:
-    def __init__(self, char, keysym, keycode):
-        self.char = char
-        self.keysym = keysym
-        self.keycode = keycode
+def all_key_formats(key: str) -> list[str]:
+    result = []
+    for form in key, key.upper(), key.capitalize():
+        result.extend([x.format(form) for x in KEY_FORMATS])
+
+    return result
+
+
+@dataclass
+class KeyEvent:
+    char: str
+    keysym: str
+    keycode: int
 
     def __repr__(self):
         return f"Event({self.char})"
 
 
-class Events:
-    LEFT = Event("\uf702", "Left", 2063660802)
-    UP = Event("\uf700", "Up", 2113992448)
-    RIGHT = Event("\uf704", "Right", 2080438019)
-    DOWN = Event("\uf701", "Down", 2097215233)
-    W = Event("w", "w", 222298199)
-    A = Event("a", "a", 4194369)
-    S = Event("s", "s", 20971603)
-    D = Event("d", "d", 37748804)
-    SPACE = Event(" ", "space", 0)
-    RETURN = Event(" ", "return", 0)
+class Events(Enum):
+    LEFT = KeyEvent("\uf702", "Left", 2063660802)
+    UP = KeyEvent("\uf700", "Up", 2113992448)
+    RIGHT = KeyEvent("\uf704", "Right", 2080438019)
+    DOWN = KeyEvent("\uf701", "Down", 2097215233)
+    W = KeyEvent("w", "w", 222298199)
+    A = KeyEvent("a", "a", 4194369)
+    S = KeyEvent("s", "s", 20971603)
+    D = KeyEvent("d", "d", 37748804)
+    SPACE = KeyEvent(" ", "space", 0)
+    RETURN = KeyEvent(" ", "return", 0)
 
 
 def keypress_func(key_binds):
     # gather all bound functions that should always be invoked
     always_call = []
-    for events in ("<KeyPress>", "<Any-KeyPress>", "<Key>", "<KeyRelease>"):
+    for events in KEY_EVENT_TYPES:
         kp = key_binds.get(events)
         if kp is not None:
             always_call.append(kp)
@@ -35,23 +54,7 @@ def keypress_func(key_binds):
     # build a mapping of keys to all the possible variations of their binding
     key_calls = defaultdict(list)
     for key in ("w", "a", "s", "d"):
-        for keybind in (
-            key,
-            key.upper(),
-            key.capitalize(),
-            f"<{key}>",
-            f"<{key.upper()}>",
-            f"<{key.capitalize()}>",
-            f"<Key-{key}>",
-            f"<Key-{key.upper()}>",
-            f"<Key-{key.capitalize()}>",
-            f"<KeyRelease-{key}>",
-            f"<KeyRelease-{key.upper()}>",
-            f"<KeyRelease-{key.capitalize()}>",
-            f"<KeyPress-{key}>",
-            f"<KeyPress-{key.upper()}>",
-            f"<KeyPress-{key.capitalize()}>",
-        ):
+        for keybind in all_key_formats(key):
             keycb = key_binds.get(keybind)
             if keycb is not None:
                 key_calls[key].append(keycb)

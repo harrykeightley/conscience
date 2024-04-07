@@ -37,7 +37,7 @@ def parse_relative_position(text):
     return None  # not reached
 
 
-def register_formats():
+def register_parsers():
     logger.debug("registering Text pattern")
     register_type(Text=parse_string)
     logger.debug("registering Number pattern")

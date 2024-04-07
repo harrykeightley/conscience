@@ -1,9 +1,9 @@
 from difflib import ndiff
 from behave import *
 from .identify import *
-from .formats import RelativePosition, register_formats
+from .parsers import RelativePosition, register_parsers
 
-register_formats()
+register_parsers()
 
 
 def assertEquals(expected, actual):
