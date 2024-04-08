@@ -1,6 +1,6 @@
 import tkinter as tk
 from director.lobes.lobe import Lobe
-from director.mocking import VacantLog, copy_function
+from director.lib.mocking import VacantLog, copy_function
 
 from behave import *
 

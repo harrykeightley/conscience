@@ -6,7 +6,7 @@ import tkinter as tk
 from behave.runner import Context
 from behave import *
 
-from director.mocking import VacantLog, MockLog
+from director.lib.mocking import VacantLog, MockLog
 from director.lobes.lobe import Lobe
 
 KEY_EVENT_TYPES = ("<KeyPress>", "<Any-KeyPress>", "<Key>", "<KeyRelease>")

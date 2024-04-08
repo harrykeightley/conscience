@@ -1,6 +1,7 @@
 import inspect
 from behave import *
 
+import tkinter as tk
 from director.lobes.lobe import Lobe
 
 

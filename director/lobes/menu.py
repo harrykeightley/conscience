@@ -1,8 +1,9 @@
 import tkinter as tk
+from typing import Optional
 
 from behave import *
 from director.lobes.lobe import Lobe
-from director.mocking import VacantLog, copy_function
+from director.lib.mocking import VacantLog, copy_function
 from director.parsers import register_parsers
 
 
@@ -26,7 +27,7 @@ class FilemenuManager:
         self._gui = gui
 
     def list_menu_children(self, menu, options=["label"]):
-        # holy damn they did not want this traversed
+        # Brae: holy damn they did not want this traversed
         index = 0
         results = []
         last_real_index = -1
@@ -37,7 +38,7 @@ class FilemenuManager:
                 break
             last_real_index = real_index
 
-            result = [index]
+            result: list[Optional[int]] = [index]
             for option in options:
                 try:
                     result.append(menu.entrycget(index, option))
