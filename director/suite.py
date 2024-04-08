@@ -25,8 +25,7 @@ import traceback
 from typing import Any, Optional
 
 from director.lobes import Lobe
-
-from .common import logger
+from director import logger
 
 
 def warn(message):

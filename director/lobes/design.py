@@ -6,6 +6,8 @@ from director.lobes.lobe import Lobe
 
 
 class CodeDesign(Lobe):
+    """Lobe which adds functionality to check that certain classes and functions are defined."""
+
     def on_load(self, suite):
         load_design_tests()
 

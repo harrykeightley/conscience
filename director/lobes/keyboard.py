@@ -20,6 +20,8 @@ KEY_FORMATS = (
 
 
 class TrackKeypresses(Lobe):
+    """Lobe which simulates pressing keys"""
+
     def on_start(self, context, suite):
         TrackKeypresses._enabled = True
         context.key_binds = VacantLog(tk.Tk, "bind")

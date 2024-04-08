@@ -8,6 +8,8 @@ from director.lobes.lobe import Lobe
 
 
 class MockAfter(Lobe):
+    """Lobe to simulate waiting amounts of time"""
+
     def on_start(self, context, suite):
         context.after = AfterSimulator()
         after_mock = MockLog(tk.Tk, "after")

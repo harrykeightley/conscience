@@ -1,6 +1,5 @@
 import json
 import csv
-import re
 from typing import List, Optional, TypedDict
 from enum import Enum
 from behave.formatter.base import Formatter
