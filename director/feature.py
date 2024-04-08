@@ -2,6 +2,9 @@ import tkinter as tk
 from tkinter import messagebox
 from tkinter.commondialog import Dialog
 from tkinter.simpledialog import _QueryDialog
+
+from behave.model import Scenario
+from behave.runner import Context
 from . import *
 from .mocking import copy_function
 from .features.keyboard import Events, press
@@ -11,13 +14,13 @@ from .features.menu import load_file_menu_tests
 
 
 class Feature:
-    def on_load(self, suite):
+    def on_load(self, suite: DirectorSuite) -> None:
         pass
 
-    def on_start(self, context, suite):
+    def on_start(self, context: Context, suite: DirectorSuite) -> None:
         pass
 
-    def failure_message(self, scenario, step):
+    def failure_message(self, scenario: Scenario, step) -> Optional[str]:
         pass
 
 
