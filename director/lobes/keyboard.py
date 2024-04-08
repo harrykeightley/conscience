@@ -1,6 +1,13 @@
 from collections import defaultdict
 from dataclasses import dataclass
 from enum import Enum
+import tkinter as tk
+
+from behave.runner import Context
+from behave import *
+
+from director.mocking import VacantLog, MockLog
+from director.lobes.lobe import Lobe
 
 KEY_EVENT_TYPES = ("<KeyPress>", "<Any-KeyPress>", "<Key>", "<KeyRelease>")
 KEY_FORMATS = (
@@ -10,6 +17,24 @@ KEY_FORMATS = (
     "<KeyRelease-{}>",
     "<KeyPress-{}>",
 )
+
+
+class TrackKeypresses(Lobe):
+    def on_start(self, context, suite):
+        TrackKeypresses._enabled = True
+        context.key_binds = VacantLog(tk.Tk, "bind")
+
+        bind_all_mock = MockLog(tk.Tk, "bind_all")
+        bind_all_mock.register(
+            lambda *args, **kwargs: print(
+                "bind_all is not supported in all Tkinter distributions. Please use bind instead."
+            )
+        )
+
+        @when("I press {key}")
+        def press_key(context: Context, key: str):
+            event = Events[key.upper()].value
+            press(context, event)
 
 
 def all_key_formats(key: str) -> list[str]:

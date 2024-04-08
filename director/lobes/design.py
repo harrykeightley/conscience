@@ -1,10 +1,15 @@
 import inspect
 from behave import *
-import tkinter as tk
+
+from director.lobes.lobe import Lobe
+
+
+class CodeDesign(Lobe):
+    def on_load(self, suite):
+        load_design_tests()
 
 
 def load_design_tests():
-
     @given("the {clazz:w} class is defined")
     def class_defined(context, clazz):
         assert hasattr(context.under_test, clazz), f"{clazz} not defined"

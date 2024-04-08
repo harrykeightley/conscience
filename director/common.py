@@ -1,6 +1,7 @@
 from difflib import ndiff
 from behave import *
-from .identify import *
+
+from director.lib.identify import *
 from .parsers import RelativePosition, register_parsers
 
 register_parsers()
@@ -10,6 +11,13 @@ def assertEquals(expected, actual):
     assert actual == expected, "\n" + "".join(
         ndiff(actual.splitlines(keepends=True), expected.splitlines(keepends=True))
     )
+
+
+@then('the window title is "{title:Text}"')
+def window_title(context, title):
+    assert (
+        context.window.title() == title
+    ), f'expected window title to be "{title}", but it was "{context.window.title}"'
 
 
 @then('I see text displaying, roughly, "{text:Text}"')

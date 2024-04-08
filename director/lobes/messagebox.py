@@ -3,78 +3,13 @@ from tkinter import messagebox
 from tkinter.commondialog import Dialog
 from tkinter.simpledialog import _QueryDialog
 
-from behave.model import Scenario
-from behave.runner import Context
-from . import *
-from .mocking import copy_function
-from .features.keyboard import Events, press
-from .features.design import load_design_tests
-from .features.after import AfterSimulator
-from .features.menu import load_file_menu_tests
+from behave import *
+
+from director.lobes.lobe import Lobe
+from director.mocking import VacantLog, copy_function
 
 
-class Feature:
-    def on_load(self, suite: DirectorSuite) -> None:
-        pass
-
-    def on_start(self, context: Context, suite: DirectorSuite) -> None:
-        pass
-
-    def failure_message(self, scenario: Scenario, step) -> Optional[str]:
-        pass
-
-
-class CodeDesign(Feature):
-    def on_load(self, suite):
-        load_design_tests()
-
-
-class PreventMainloop(Feature):
-    def on_start(self, context, suite):
-        VacantLog(tk.Tk, "mainloop")
-        VacantLog(tk.Widget, "mainloop")
-
-
-class TrackKeypresses(Feature):
-    def on_start(self, context, suite):
-        TrackKeypresses._enabled = True
-        context.key_binds = VacantLog(tk.Tk, "bind")
-
-        bind_all_mock = MockLog(tk.Tk, "bind_all")
-        bind_all_mock.register(
-            lambda *args, **kwargs: print(
-                "bind_all is not supported in all Tkinter distributions. Please use bind instead."
-            )
-        )
-
-        @when("I press {key}")
-        def press_key(context, key):
-            event = getattr(Events, key.upper())
-            press(context, event)
-
-
-class MockAfter(Feature):
-    def on_start(self, context, suite):
-        context.after = AfterSimulator()
-        after_mock = MockLog(tk.Tk, "after")
-        after_mock.register(context.after.after)
-        after_mock = MockLog(tk.Widget, "after")
-        after_mock.register(context.after.after)
-        after_canel_mock = MockLog(tk.Tk, "after_cancel")
-        after_canel_mock.register(context.after.after_cancel)
-        after_canel_mock = MockLog(tk.Widget, "after_cancel")
-        after_canel_mock.register(context.after.after_cancel)
-
-        @when("one second passes")
-        def one_second_passes(context):
-            context.after.step(1000)
-
-        @when("{seconds:d} seconds pass")
-        def seconds_passes(context, seconds):
-            context.after.step(seconds * 1000)
-
-
-class MockMessagebox(Feature):
+class MockMessagebox(Lobe):
     def on_load(self, suite):
         @when('I get prompted I will say "{answer:Text}"')
         def set_response(context, answer):
@@ -181,53 +116,3 @@ class MockMessagebox(Feature):
             assert (
                 found
             ), f"did not find messagebox with text {text} in {potential_calls}"
-
-
-class MockMenu(Feature):
-    def on_start(self, context, suite):
-        old_config = copy_function(tk.Tk.config)
-        context.menus = []
-
-        def inject_config(self, **kwargs):
-            old_config(self, **kwargs)
-            if "menu" in kwargs:
-                context.menus.append(kwargs["menu"])
-
-        setattr(tk.Tk, "config", inject_config)
-
-        load_file_menu_tests()
-
-
-class MockDestroy(Feature):
-    old_destroy = copy_function(tk.Tk.destroy)
-
-    def on_start(self, context, suite):
-        context.destroyed = []
-
-        def inject_destroy(self):
-            MockDestroy.old_destroy(self)
-            context.destroyed.append(self)
-
-        setattr(tk.Tk, "destroy", inject_destroy)
-
-        @then("the window should be closed")
-        def window_closed(context):
-            assert (
-                len(context.destroyed) == 1
-            ), f"found {len(context.destroyed)} calls to destroy (needed 1): {context.destroyed}"
-
-        @then("the window should not be closed")
-        def window_not_closed(context):
-            assert (
-                len(context.destroyed) == 0
-            ), f"found {len(context.destroyed)} calls to destroy (needed 0): {context.destroyed}"
-
-
-class ExceptionURL(Feature):
-    def __init__(self, exception, url):
-        self._exception = exception
-        self._url = url
-
-    def failure_message(self, scenario, step):
-        if self._exception in step.error_message:
-            return f"{self._exception} was raised\nThe following EdStem post may be helpful:\n\t{self._url}"

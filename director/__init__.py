@@ -19,19 +19,24 @@ from behave.__main__ import run_behave
 from behave.__main__ import Configuration
 from behave.formatter.base import StreamOpener
 
-from .formats import register_formats
-from .mocking import MixinBase, LogMixin, RelayLog, MockMixin, RelayMixin
-from .mocking import VacantLog, RelayLog, MockLog
-from .identify import WidgetSelector, find_widgets
+from director.parsers import register_parsers
+from director.lib.mocking import (
+    MixinBase,
+    LogMixin,
+    RelayLog,
+    MockMixin,
+    RelayMixin,
+    VacantLog,
+    MockLog,
+)
+from director.lib.identify import WidgetSelector, find_widgets
 from director.formatters import GradescopeFormatter
-
-from .window import *
 
 
 def setup(context):
     context.under_test = context.config.under_test
     context.suite = context.config.suite
-    register_formats()
+    register_parsers()
 
 
 def load_under_test(path: Path):

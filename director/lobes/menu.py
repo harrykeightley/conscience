@@ -1,7 +1,24 @@
 import tkinter as tk
 
 from behave import *
-from director.common import *
+from director.lobes.lobe import Lobe
+from director.mocking import VacantLog, copy_function
+from director.parsers import register_parsers
+
+
+class MockMenu(Lobe):
+    def on_start(self, context, suite):
+        old_config = copy_function(tk.Tk.config)
+        context.menus = []
+
+        def inject_config(self, **kwargs):
+            old_config(self, **kwargs)
+            if "menu" in kwargs:
+                context.menus.append(kwargs["menu"])
+
+        setattr(tk.Tk, "config", inject_config)
+
+        load_file_menu_tests()
 
 
 class FilemenuManager:
@@ -86,6 +103,8 @@ def get_menu_option(context, menu_item):
 
 
 def load_file_menu_tests():
+    register_parsers()
+
     @then("the file menu is displayed")
     def filemenu_displayed(context):
         get_filemenu(context)

@@ -18,9 +18,13 @@ warnings.Tk_destroy = "you should not close the window with .destroy - reset the
 warnings.Widget_destroy = "you should not use the .destroy method - gracefully reconfigure the updated widgets using the .config method"
 """
 
+from dataclasses import dataclass, field
 import random
 import tkinter as tk
 import traceback
+from typing import Any, Optional
+
+from director.lobes import Lobe
 
 from .common import logger
 
@@ -35,20 +39,20 @@ def warn(message):
     return inner
 
 
+@dataclass
 class DirectorSuite:
-    def __init__(self, seed=None):
-        self.seed = seed
-        self._overwrites = {}
-        self._warnings = []
-        self._features = []
+    seed: Optional[int] = None
+    _overwrites: dict[str, Any] = field(default_factory=dict)
+    _warnings: list[tuple[Any, Any, str]] = field(default_factory=list)
+    _features: list[Lobe] = field(default_factory=list)
 
-    def enable(self, feature):
+    def enable(self, feature: Lobe):
         self._features.append(feature)
 
     def overwrite(self, variable, value):
         self._overwrites[variable] = value
 
-    def warn_on(self, clz, method, message):
+    def warn_on(self, clz, method, message: str):
         self._warnings.append((clz, method, message))
 
     def load(self):
