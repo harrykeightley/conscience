@@ -5,6 +5,7 @@ within an existing model.
 Allows testing to occur in an environment where no knowledge
 is known about the implementation details of the GUI.
 """
+
 import tkinter as tk
 from typing import Callable, List, TypeVar
 
