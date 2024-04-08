@@ -4,7 +4,7 @@ from typing import Optional
 from behave.model import Scenario
 from behave.runner import Context
 
-from director.suite import DirectorSuite
+from conscience.suite import DirectorSuite
 
 
 class Lobe:

@@ -1,4 +1,4 @@
-from director import logger
+from conscience import logger
 from behave import register_type
 import parse
 from enum import Enum

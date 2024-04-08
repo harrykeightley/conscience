@@ -24,8 +24,8 @@ import tkinter as tk
 import traceback
 from typing import Any, Optional
 
-from director.lobes import Lobe
-from director import logger
+from conscience.lobes import Lobe
+from conscience import logger
 
 
 def warn(message):

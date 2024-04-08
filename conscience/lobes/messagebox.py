@@ -5,8 +5,8 @@ from tkinter.simpledialog import _QueryDialog
 
 from behave import *
 
-from director.lobes.lobe import Lobe
-from director.lib.mocking import VacantLog, copy_function
+from conscience.lobes.lobe import Lobe
+from conscience.lib.mocking import VacantLog, copy_function
 
 
 class MockMessagebox(Lobe):

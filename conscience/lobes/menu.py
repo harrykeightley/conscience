@@ -2,9 +2,9 @@ import tkinter as tk
 from typing import Optional
 
 from behave import *
-from director.lobes.lobe import Lobe
-from director.lib.mocking import VacantLog, copy_function
-from director.parsers import register_parsers
+from conscience.lobes.lobe import Lobe
+from conscience.lib.mocking import VacantLog, copy_function
+from conscience.parsers import register_parsers
 
 
 class MockMenu(Lobe):

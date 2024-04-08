@@ -2,7 +2,7 @@ import inspect
 from behave import *
 
 import tkinter as tk
-from director.lobes.lobe import Lobe
+from conscience.lobes.lobe import Lobe
 
 
 class CodeDesign(Lobe):

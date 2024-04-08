@@ -1,4 +1,4 @@
-name = "director"
+name = "conscience"
 
 from io import BytesIO, StringIO
 from os import chdir
@@ -8,7 +8,7 @@ import json
 import traceback
 from typing import Optional, TypedDict
 
-from director.suite import DirectorSuite
+from conscience.suite import DirectorSuite
 
 logger = logging.getLogger(__package__)
 debug = logging.getLogger(f"{__package__}.debug")
@@ -19,8 +19,8 @@ from behave.__main__ import run_behave
 from behave.__main__ import Configuration
 from behave.formatter.base import StreamOpener
 
-from director.parsers import register_parsers
-from director.lib.mocking import (
+from conscience.parsers import register_parsers
+from conscience.lib.mocking import (
     MixinBase,
     LogMixin,
     RelayLog,
@@ -29,8 +29,8 @@ from director.lib.mocking import (
     VacantLog,
     MockLog,
 )
-from director.lib.identify import WidgetSelector, find_widgets
-from director.formatters import GradescopeFormatter
+from conscience.lib.identify import WidgetSelector, find_widgets
+from conscience.formatters import GradescopeFormatter
 
 
 def setup(context):

@@ -1,8 +1,8 @@
 from difflib import ndiff
 from behave import *
 
-from director.lib.identify import *
-from .parsers import RelativePosition, register_parsers
+from conscience.lib.identify import *
+from conscience.parsers import RelativePosition, register_parsers
 
 register_parsers()
 

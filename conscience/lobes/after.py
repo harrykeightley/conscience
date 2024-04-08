@@ -3,8 +3,8 @@ import tkinter as tk
 from behave.runner import Context
 from behave import *
 
-from director.lib.mocking import MockLog
-from director.lobes.lobe import Lobe
+from conscience.lib.mocking import MockLog
+from conscience.lobes.lobe import Lobe
 
 
 class MockAfter(Lobe):
