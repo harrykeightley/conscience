@@ -17,7 +17,8 @@ dist/
 downloads/
 eggs/
 .eggs/
-lib/
+# Commented this out to call my lib lib?
+.lib/ 
 lib64/
 parts/
 sdist/
