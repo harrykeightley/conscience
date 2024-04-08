@@ -1,7 +1,7 @@
 from behave import *
-from .formats import register_formats
+from .parsers import register_parsers
 
-register_formats()
+register_parsers()
 
 
 @then('the window title is "{title:Text}"')
