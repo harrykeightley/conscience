@@ -1,7 +1,8 @@
 import subprocess, os
+from loguru import logger
 
 from behave.model import Status
-from director import setup, logger
+from conscience import setup
 
 
 def before_feature(context, feature):

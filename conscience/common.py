@@ -1,7 +1,8 @@
 from difflib import ndiff
 from behave import *
+import tkinter as tk
 
-from conscience.lib.identify import *
+from conscience.lib.identify import WidgetSelector, CanvasSelector, find_widgets
 from conscience.parsers import RelativePosition, register_parsers
 
 register_parsers()

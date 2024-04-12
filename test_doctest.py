@@ -1,9 +1,9 @@
 import doctest
-import director
+import conscience
 
 
 def main():
-    doctest.testmod(m=director)
+    doctest.testmod(m=conscience)
 
 
 if __name__ == "__main__":

@@ -2,7 +2,7 @@
 Ensure that mocking correctly captures subsequent calls to methods.
 """
 
-from director.mocking import MixinBase
+from conscience.lib.mocking import MixinBase
 import unittest
 import traceback
 
@@ -32,7 +32,6 @@ class DropCalls(MixinBase):
 
 
 class TestCoreMock(unittest.TestCase):
-
     def test_mock(self):
         """test the basic ability to mock where calls are simply replaced"""
         mock1 = DropCalls(MockMe, "no_args")

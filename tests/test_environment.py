@@ -6,7 +6,6 @@ import unittest
 
 
 class TestEnvironment(unittest.TestCase):
-
     def test_behave(self):
         """test the behave library is installed"""
         try:
@@ -24,7 +23,7 @@ class TestEnvironment(unittest.TestCase):
     def test_directory(self):
         """test the directory library is accessible"""
         try:
-            import director
+            import conscience
         except ImportError as e:
             self.fail("directory library is not accessible")
 

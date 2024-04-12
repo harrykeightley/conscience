@@ -1,6 +1,6 @@
 from behave import *
-from director import *
-from director.common import *
+from conscience.lib.mocking import VacantLog
+
 import tkinter as tk
 
 

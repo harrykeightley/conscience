@@ -1,7 +1,7 @@
 from typing import Optional
 from PIL.ImageTk import PhotoImage
 
-from director import logger
+from loguru import logger
 from PIL.Image import Image
 
 
@@ -26,7 +26,7 @@ class ImageRegistry:
     def lookup(self, name: str) -> Optional[Image]:
         result = self._images.get(name)
         if result is None:
-            logger.warn(f"unable to find an image corresponding to {name}")
+            logger.warning(f"unable to find an image corresponding to {name}")
         return result
 
     def __contains__(self, name: str) -> bool:

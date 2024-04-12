@@ -122,7 +122,7 @@ class GradescopeFormatter(Formatter):
 
         return result
 
-    def reset(self, scenario: Scenario):
+    def reset(self, scenario):
         self._current_scenario: Scenario = scenario
         self._passed = True
         self._output = ""

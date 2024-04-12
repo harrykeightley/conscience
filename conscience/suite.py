@@ -24,18 +24,20 @@ import tkinter as tk
 import traceback
 from typing import Any, Optional
 
-from conscience.lobes import Lobe
-from conscience import logger
+from loguru import logger
 
 
 def warn(message):
     def inner(*args, **kwargs):
         stack = traceback.format_stack()
         stack = filter(lambda log: "a3.py" in log, stack)
-        logger.warn("".join(stack))
-        logger.warn(message)
+        logger.warning("".join(stack))
+        logger.warning(message)
 
     return inner
+
+
+# NOTE: omitting lobe type to avoid circular dependency
 
 
 @dataclass
@@ -43,10 +45,10 @@ class DirectorSuite:
     seed: Optional[int] = None
     _overwrites: dict[str, Any] = field(default_factory=dict)
     _warnings: list[tuple[Any, Any, str]] = field(default_factory=list)
-    _features: list[Lobe] = field(default_factory=list)
+    _lobes: list = field(default_factory=list)
 
-    def enable(self, feature: Lobe):
-        self._features.append(feature)
+    def enable(self, feature):
+        self._lobes.append(feature)
 
     def overwrite(self, variable, value):
         self._overwrites[variable] = value
@@ -55,12 +57,12 @@ class DirectorSuite:
         self._warnings.append((clz, method, message))
 
     def load(self):
-        for feature in self._features:
-            feature.on_load(self)
+        for lobe in self._lobes:
+            lobe.on_load(self)
 
     def on_fail(self, scenario, step):
         message = ""
-        for feature in self._features:
+        for feature in self._lobes:
             feature_message = feature.failure_message(scenario, step)
             if feature_message is not None:
                 message += feature_message
@@ -77,7 +79,7 @@ class DirectorSuite:
         for clz, method, message in self._warnings:
             setattr(clz, method, warn(message))
 
-        for feature in self._features:
+        for feature in self._lobes:
             feature.on_start(context, self)
 
         self.window = tk.Tk()
