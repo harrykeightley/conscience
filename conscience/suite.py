@@ -41,7 +41,7 @@ def warn(message):
 
 
 @dataclass
-class DirectorSuite:
+class ConscienceSuite:
     seed: Optional[int] = None
     _overwrites: dict[str, Any] = field(default_factory=dict)
     _warnings: list[tuple[Any, Any, str]] = field(default_factory=list)

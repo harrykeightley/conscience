@@ -1,3 +1,10 @@
+"""This module describes patterns that parse step instructions, and forward 
+the matching elements as arguments to the step function.
+
+For an example, see the `relative_to_all` function in `steps.py`, which makes
+use of `parsers.parse_relative_position`.
+"""
+
 from loguru import logger
 from behave import register_type
 import parse
