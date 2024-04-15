@@ -5,6 +5,7 @@ Test a very simple GUI.
 from pathlib import Path
 import sys
 from loguru import logger
+from conscience.main import setup
 
 from conscience.suite import ConscienceSuite
 
@@ -12,7 +13,7 @@ logger.add(sys.stdout)
 
 import unittest
 
-from conscience import run_tests, build_config, setup_config
+from conscience import run_tests, build_config, setup_config, setup
 
 
 class TestHelloWorld(unittest.TestCase):

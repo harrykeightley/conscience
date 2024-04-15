@@ -106,7 +106,7 @@ def setup_config(
 ):
     config.steps_dir = "."
     config.paths = [path.as_posix() for path in tests]
-    config.environment_file = environment_file
+    config.environment_file = environment_file.as_posix()
     config.suite = suite
     config.working_directory = working_directory
     config.log_capture = False
