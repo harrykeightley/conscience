@@ -2,6 +2,7 @@
 Test a very simple GUI.
 """
 
+from pathlib import Path
 import sys
 from loguru import logger
 
@@ -11,17 +12,15 @@ logger.add(sys.stdout)
 
 import unittest
 
-from conscience import test as ponder
+from conscience import run_tests, build_config, setup_config
 
 
 class TestHelloWorld(unittest.TestCase):
     def test_hello_world(self):
         suite = ConscienceSuite()
-        ponder(
-            "tests/hello_world_tests",
-            "tests/hello_world/hello_world_gui.py",
-            suite=suite,
-        )
+        config = build_config()
+        setup_config(config, suite, tests=[Path("tests/hello_world_tests")])
+        run_tests(config, Path("tests/hello_world/hello_world_gui.py"))
 
 
 if __name__ == "__main__":

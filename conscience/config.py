@@ -11,7 +11,6 @@ from behave.formatter.base import Formatter, StreamOpener
 from conscience.formatters import GradescopeFormatter
 from conscience.score import GradeScopeScore
 from conscience.suite import ConscienceSuite
-from conscience.config import ConscienceConfiguration
 
 
 class GradeScopeMetadata(TypedDict):
@@ -41,7 +40,7 @@ class ConscienceConfiguration(Configuration):
     def __init__(self, command_args=None, load_config=True, verbose=None, **kwargs):
         super().__init__(command_args, load_config, verbose, **kwargs)
         self.suite: Optional[ConscienceSuite] = None
-        self.paths: list[Path] = []
+        self.paths: list[str] = []
         self.under_test: Optional[ModuleType] = None
         self.more_formatters: Optional[dict[str, type[Formatter]]] = None
         self.working_directory: Optional[Path] = None
@@ -100,13 +99,13 @@ def build_config(
 def setup_config(
     config: ConscienceConfiguration,
     suite: ConscienceSuite,
-    tests: Path | list[Path],
+    tests: list[Path],
     environment_file: Path = Path("../environment.py"),
     working_directory: Path = Path("."),
     metadata: Optional[GradeScopeMetadata] = None,
 ):
     config.steps_dir = "."
-    config.paths = tests
+    config.paths = [path.as_posix() for path in tests]
     config.environment_file = environment_file
     config.suite = suite
     config.working_directory = working_directory

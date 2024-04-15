@@ -1,8 +1,7 @@
-from _typeshed import SupportsRead
 from dataclasses import dataclass
 from io import BytesIO
 import json
-from typing import TypedDict
+from typing import IO, TypedDict
 
 
 class GradeScopeScoreDict(TypedDict):
@@ -30,7 +29,7 @@ class GradeScopeScore:
         return GradeScopeScore(data["score"], data["output"])
 
     @staticmethod
-    def from_json(fp: SupportsRead[str | bytes]):
+    def from_json(fp: IO):
         return GradeScopeScore.from_dict(json.load(fp))
 
     @staticmethod

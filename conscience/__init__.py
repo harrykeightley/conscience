@@ -1,5 +1,7 @@
 name = "conscience"
-from conscience.main import load_under_test, setup, test
+
+from conscience.config import ConscienceConfiguration, GradescopeConfiguration, build_config, setup_config
+from conscience.main import setup, run_tests
 
 
 # __export__ = [

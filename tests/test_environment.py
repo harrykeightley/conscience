@@ -20,7 +20,7 @@ class TestEnvironment(unittest.TestCase):
         except ImportError as e:
             self.fail("tkinter library is not available")
 
-    def test_directory(self):
+    def test_conscience(self):
         """test the directory library is accessible"""
         try:
             import conscience
