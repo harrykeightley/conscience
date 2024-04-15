@@ -1,2 +1,2 @@
 from behave import *
-from conscience import *
+from conscience.common import *

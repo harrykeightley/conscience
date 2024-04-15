@@ -17,6 +17,7 @@ class GradeScopeMetadata(TypedDict):
     student_categories: str
     student_metadata: str
 
+
 def load_under_test(path: Path):
     """Loads the supplied path as the `Software Under Test`, as behave.py requires the
     libary to be loaded already.
@@ -90,6 +91,7 @@ class GradescopeConfiguration(ConscienceConfiguration):
 def build_config(
     is_gradescope: bool = False,
 ) -> ConscienceConfiguration:
+    """Factory to build a config with the appropriate arguments for its type."""
     extra_args = [] if not is_gradescope else ["--no-summary"]
     command_args = ["--no-source", "--no-timings"] + extra_args
     clz = GradescopeConfiguration if is_gradescope else ConscienceConfiguration
@@ -100,11 +102,29 @@ def setup_config(
     config: ConscienceConfiguration,
     suite: ConscienceSuite,
     tests: list[Path],
+    steps_dir: Path = Path("steps"),
     environment_file: Path = Path("../environment.py"),
     working_directory: Path = Path("."),
     metadata: Optional[GradeScopeMetadata] = None,
 ):
-    config.steps_dir = "."
+    """Sets up a ConscienceConfiguration with the supplied parameters.
+
+    Parameters:
+        config: The config to modify
+        suite: The ConscienceSuite with features enabled to inject into the config.
+        tests: A list of paths to the folders that behave will look in to find features.
+            For some god awful reason, the environment_file and steps_dir arguments are relative
+            to the paths listed here, and I'm unsure of what happens when we give multiple paths.
+        steps_dir: The folder in which behave will look for the feature steps. This is relative to
+            the tests path.
+        environment_file: A file which specifies hooks to be run between steps or features etc.
+            Once again, this is relative to the tests directory.
+        working_directory: During testing, we will chdir into this directory before we look at
+            paths.
+        metadata: Some gradescope metadata to inject into the config if it's a gradescope config.
+    """
+
+    config.steps_dir = steps_dir.as_posix()
     config.paths = [path.as_posix() for path in tests]
     config.environment_file = environment_file.as_posix()
     config.suite = suite

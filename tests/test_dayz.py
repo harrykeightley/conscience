@@ -11,13 +11,15 @@ from conscience.suite import ConscienceSuite
 
 class TestDayZ(unittest.TestCase):
     def test_dayz(self):
-
         suite = ConscienceSuite()
         config = build_config()
-        setup_config(config, 
-                     suite, 
-                     tests=[Path("tests/dayz/features")], 
-                     environment_file=Path("tests/dayz/features/environment.py"))
+        setup_config(
+            config,
+            suite,
+            tests=[Path("tests/dayz/features")],
+            steps_dir=Path("../steps"),
+            environment_file=Path("environment.py"),
+        )
         run_tests(config, Path("tests/dayz/dayz.py"))
 
 

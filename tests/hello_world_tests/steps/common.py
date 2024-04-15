@@ -1,5 +1,7 @@
 from behave import *
+from loguru import logger
 from conscience.lib.mocking import VacantLog
+from conscience.common import rough_text
 
 import tkinter as tk
 
