@@ -6,35 +6,37 @@ import json
 from behave.runner import Context
 from conscience.config import ConscienceConfiguration
 
-import importlib.util
-
 from behave.__main__ import run_behave
-
 from conscience.parsers import register_parsers
+from conscience.score import GradeScopeScore
 
 
 def setup(context: Context):
+    """Setup the context for testing with behave
+    
+    Pulls the software under test (SUT) and the DirectorSuite 
+    on level up within the context. """
     context.under_test = context.config.under_test
     context.suite = context.config.suite
     register_parsers()
 
 
-def load_under_test(path: Path):
-    """Loads the supplied path as the `Software Under Test`, as behave.py requires the
-    libary to be loaded already.
-    Parameters:
-        path: The path to the file to load.
-    """
-    spec = importlib.util.spec_from_file_location("under_test", path)
-    foo = importlib.util.module_from_spec(spec)
-    spec.loader.exec_module(foo)
-    return foo
-
-
 def witness(
     config: ConscienceConfiguration,
     target: Path,
-):
+) -> GradeScopeScore:
+    """Tests a target assessment file with the supplied configuration.
+
+    Parameters:
+        config: The configuration class to run. Assumes that the passed
+            configuration is already setup (see `conscience.config.setup_config`).
+        target: The target file to run the tests on.
+
+    Returns:
+        The score representing how the student did on the tests. 
+        If the Configuration passed in is not a GradescopeConfiguration, returns 
+        a dummy score.
+    """
     if config.working_directory:
         chdir(config.working_directory)
 

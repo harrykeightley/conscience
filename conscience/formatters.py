@@ -7,7 +7,8 @@ from behave.model import Scenario, Step
 from behave.model_core import Status
 
 
-# type hints borrowed from MikeLint
+# NOTE: type hints borrowed from MikeLint
+
 class GradescopeAssignmentMetadata(TypedDict):
     due_date: str
     group_size: Optional[int]

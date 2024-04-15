@@ -4,6 +4,7 @@ from pathlib import Path
 from types import ModuleType
 from typing import NoReturn, Optional, TypedDict, override
 
+import importlib.util
 from behave.__main__ import Configuration
 from behave.formatter.base import Formatter, StreamOpener
 
@@ -16,6 +17,24 @@ from conscience.config import ConscienceConfiguration
 class GradeScopeMetadata(TypedDict):
     student_categories: str
     student_metadata: str
+
+def load_under_test(path: Path):
+    """Loads the supplied path as the `Software Under Test`, as behave.py requires the
+    libary to be loaded already.
+    Parameters:
+        path: The path to the file to load.
+    """
+    spec = importlib.util.spec_from_file_location("under_test", path)
+    if spec is None:
+        raise ModuleNotFoundError(f"Could not find spec at {path}")
+
+    module = importlib.util.module_from_spec(spec)
+    # Adding these checks to shutup type errors
+    if spec.loader is None:
+        raise Exception("Could not find loader on spec:", spec)
+
+    spec.loader.exec_module(module)
+    return module
 
 
 class ConscienceConfiguration(Configuration):
