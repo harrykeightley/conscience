@@ -5,8 +5,7 @@ Test the assignment that was originally used to develop this project.
 from pathlib import Path
 import unittest
 
-from conscience import build_config, setup_config
-from conscience.main import witness
+from conscience import build_config, setup_config, witness
 from conscience.suite import ConscienceSuite
 
 

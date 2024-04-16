@@ -1,4 +1,3 @@
-import sys
 from os import chdir
 from pathlib import Path
 import json
@@ -54,20 +53,6 @@ def witness(
 
     run_behave(config)
     return config.read_results()
-
-
-def export_results(results: GradescopeResults, output=sys.stdout):
-    output.write(json.dumps(results, indent=4, ensure_ascii=False))
-
-
-def aggregate_tests(*results: GradescopeResults) -> list[TestScore]:
-    scores = []
-
-    for result in results:
-        if "tests" in result:
-            scores += result["tests"]
-
-    return scores
 
 
 def load_common_steps():
