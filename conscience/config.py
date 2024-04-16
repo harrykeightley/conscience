@@ -7,9 +7,15 @@ from typing import NoReturn, Optional, TypedDict, override
 import importlib.util
 from behave.__main__ import Configuration
 from behave.formatter.base import Formatter, StreamOpener
+from loguru import logger
 
 from conscience.formatters import GradescopeFormatter
-from conscience.score import GradeScopeScore
+from conscience.score import (
+    EMPTY_SCORE,
+    GradescopeResults,
+    error_results,
+    read_results_from_stream,
+)
 from conscience.suite import ConscienceSuite
 
 
@@ -52,14 +58,14 @@ class ConscienceConfiguration(Configuration):
     def load_metadata(self, metadata: GradeScopeMetadata):
         pass
 
-    def handle_load_failure(self, e: Exception) -> GradeScopeScore | NoReturn:
+    def handle_load_failure(self, e: Exception) -> GradescopeResults | NoReturn:
         raise e
 
     def reset_outputs(self):
         pass
 
-    def read_score(self) -> GradeScopeScore:
-        return GradeScopeScore(score=0, output="Dummy result")
+    def read_results(self) -> GradescopeResults:
+        return {"tests": [EMPTY_SCORE]}
 
 
 class GradescopeConfiguration(ConscienceConfiguration):
@@ -72,11 +78,12 @@ class GradescopeConfiguration(ConscienceConfiguration):
 
     @override
     def reset_outputs(self):
+        logger.debug("Setting up output stream")
         self.output_stream = BytesIO()
-        self.outputs = [self.output_stream]
+        self.outputs = [StreamOpener(stream=self.output_stream)]
 
     def handle_load_failure(self, e: Exception):
-        return GradeScopeScore(score=0, output=traceback.format_exc())
+        return error_results(traceback.format_exc())
 
     @override
     def load_metadata(self, metadata: GradeScopeMetadata):
@@ -84,8 +91,8 @@ class GradescopeConfiguration(ConscienceConfiguration):
         self.student_metadata = metadata["student_metadata"]
 
     @override
-    def read_score(self) -> GradeScopeScore:
-        return GradeScopeScore.from_stream(self.output_stream)
+    def read_results(self) -> GradescopeResults:
+        return read_results_from_stream(self.output_stream)
 
 
 def build_config(

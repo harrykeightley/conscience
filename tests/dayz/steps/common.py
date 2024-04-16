@@ -1,2 +1,5 @@
 from behave import *
-from conscience.common import *
+
+from conscience import load_common_steps
+
+load_common_steps()

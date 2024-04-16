@@ -1,9 +1,10 @@
 from behave import *
-from loguru import logger
 from conscience.lib.mocking import VacantLog
-from conscience.common import rough_text
+from conscience import load_common_steps
 
 import tkinter as tk
+
+load_common_steps()
 
 
 @given("I start the application")

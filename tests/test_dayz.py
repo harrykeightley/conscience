@@ -5,14 +5,15 @@ Test the assignment that was originally used to develop this project.
 from pathlib import Path
 import unittest
 
-from conscience import run_tests, build_config, setup_config
+from conscience import build_config, setup_config
+from conscience.main import witness
 from conscience.suite import ConscienceSuite
 
 
 class TestDayZ(unittest.TestCase):
     def test_dayz(self):
         suite = ConscienceSuite()
-        config = build_config()
+        config = build_config(is_gradescope=True)
         setup_config(
             config,
             suite,
@@ -20,7 +21,7 @@ class TestDayZ(unittest.TestCase):
             steps_dir=Path("../steps"),
             environment_file=Path("environment.py"),
         )
-        run_tests(config, Path("tests/dayz/dayz.py"))
+        witness(config, Path("tests/dayz/dayz.py"))
 
 
 if __name__ == "__main__":

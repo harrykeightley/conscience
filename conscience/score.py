@@ -1,42 +1,86 @@
-from dataclasses import dataclass
 from io import BytesIO
+import sys
 import json
-from typing import IO, TypedDict
+from logging import error
+from typing import Literal, NotRequired, TypedDict
+
+TestStatus = Literal["passed", "failed"]
+OutputFormat = Literal["text", "html", "simple_format", "md", "ansi"]
+Visibility = Literal["visible", "hidden", "after_due_date", "after_published"]
 
 
-class GradeScopeScoreDict(TypedDict):
-    score: int
-    output: str
+class TestScore(TypedDict):
+    """A dictionary representing the results of running a single test"""
+
+    score: float
+    max_score: NotRequired[float]
+    name: NotRequired[str]
+    name_format: NotRequired[OutputFormat]
+    status: NotRequired[TestStatus]
+    output: NotRequired[str]
+    output_format: NotRequired[OutputFormat]
+    tags: NotRequired[list[str]]
+    visibility: NotRequired[Visibility]
+    number: NotRequired[str]
+    extra_data: NotRequired[dict]
 
 
-class GradeScopeAggregatedTests(TypedDict):
-    tests: list[GradeScopeScoreDict]
+class GradescopeResults(TypedDict):
+    """A dictionary representing the results of running all tests for one student submission.
+
+    See https://gradescope-autograders.readthedocs.io/en/latest/specs/"""
+
+    score: NotRequired[float]
+    execution_time: NotRequired[int]
+    output: NotRequired[str]
+    output_format: NotRequired[OutputFormat]
+    test_output_format: NotRequired[OutputFormat]
+    test_name_format: NotRequired[OutputFormat]
+    visibility: NotRequired[Visibility]
+    stdout_visibility: NotRequired[Visibility]
+    extra_data: NotRequired[dict]
+    tests: NotRequired[list[TestScore]]
 
 
-@dataclass
-class GradeScopeScore:
-    score: int
-    output: str
+EMPTY_SCORE: TestScore = {
+    "score": 0,
+    "output": "Empty Test Score",
+    "max_score": 1,  # make implicit that the test failed
+}
 
-    def to_dict(self) -> GradeScopeScoreDict:
-        return {"score": self.score, "output": self.output}
 
-    def to_aggregated_tests(self) -> GradeScopeAggregatedTests:
-        return {"tests": [self.to_dict()]}
+def error_results(msg: str) -> GradescopeResults:
+    return {"score": 0, "output": msg}
 
-    @staticmethod
-    def from_dict(data: GradeScopeScoreDict):
-        return GradeScopeScore(data["score"], data["output"])
 
-    @staticmethod
-    def from_json(fp: IO):
-        return GradeScopeScore.from_dict(json.load(fp))
+def read_results_from_stream(stream: BytesIO) -> GradescopeResults:
+    try:
+        stream.seek(0)
+        return json.load(stream)
+    except json.JSONDecodeError:
+        stream.seek(0)
+        return error_results(stream.read().decode())
 
-    @staticmethod
-    def from_stream(stream: BytesIO):
-        try:
-            stream.seek(0)
-            return GradeScopeScore.from_json(stream)
-        except json.JSONDecodeError:
-            stream.seek(0)
-            return GradeScopeScore(score=0, output=stream.read().decode())
+
+def aggregate_tests(*results: GradescopeResults) -> list[TestScore]:
+    scores = []
+
+    for result in results:
+        if "tests" in result:
+            scores += result["tests"]
+
+    return scores
+
+
+def aggregate_results(
+    result: GradescopeResults, *results: GradescopeResults
+) -> GradescopeResults:
+    tests = aggregate_tests(result, *results)
+
+    result = result.copy()
+    result["tests"] = tests
+    return result
+
+
+def export_results(results: GradescopeResults, output=sys.stdout):
+    output.write(json.dumps(results, indent=4, ensure_ascii=False))

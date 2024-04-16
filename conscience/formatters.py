@@ -6,8 +6,11 @@ from behave.formatter.base import Formatter
 from behave.model import Scenario, Step
 from behave.model_core import Status
 
+from conscience.score import GradescopeResults, TestScore
+
 
 # NOTE: type hints borrowed from MikeLint
+
 
 class GradescopeAssignmentMetadata(TypedDict):
     due_date: str
@@ -62,8 +65,8 @@ class GradescopeFormatter(Formatter):
     def __init__(self, stream_opener, config):
         super().__init__(stream_opener, config)
 
-        self._tests = []
-        self._results = {"tests": self._tests}
+        self._tests: list[TestScore] = []
+        self._results: GradescopeResults = {"tests": self._tests}
 
         self._determine_student_type()
         self.reset(None)
@@ -128,7 +131,7 @@ class GradescopeFormatter(Formatter):
         self._passed = True
         self._output = ""
 
-    def _make_test(self):
+    def _make_test(self) -> TestScore:
         weight = parse_tag_value(self._current_scenario, "weight", default=1)
         visible = has_tag(self._current_scenario, "visible")
         if self.type is not None:

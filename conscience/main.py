@@ -8,14 +8,14 @@ from conscience.config import ConscienceConfiguration
 
 from behave.__main__ import run_behave
 from conscience.parsers import register_parsers
-from conscience.score import GradeScopeScore
+from conscience.score import GradescopeResults, TestScore
 
 
 def setup(context: Context):
     """Setup the context for testing with behave
-    
-    Pulls the software under test (SUT) and the DirectorSuite 
-    on level up within the context. """
+
+    Pulls the software under test (SUT) and the DirectorSuite
+    on level up within the context."""
     context.under_test = context.config.under_test
     context.suite = context.config.suite
     register_parsers()
@@ -24,7 +24,7 @@ def setup(context: Context):
 def witness(
     config: ConscienceConfiguration,
     target: Path,
-) -> GradeScopeScore:
+) -> GradescopeResults:
     """Tests a target assessment file with the supplied configuration.
 
     Parameters:
@@ -33,8 +33,8 @@ def witness(
         target: The target file to run the tests on.
 
     Returns:
-        The score representing how the student did on the tests. 
-        If the Configuration passed in is not a GradescopeConfiguration, returns 
+        The score representing how the student did on the tests.
+        If the Configuration passed in is not a GradescopeConfiguration, returns
         a dummy score.
     """
     if config.working_directory:
@@ -53,12 +53,29 @@ def witness(
         return config.handle_load_failure(e)
 
     run_behave(config)
-    return config.read_score()
+    return config.read_results()
 
 
-def run_tests(config: ConscienceConfiguration, target: Path, output=sys.stdout):
-    score = witness(config, target).to_aggregated_tests()
-    output.write(json.dumps(score, indent=4, ensure_ascii=False))
+def export_results(results: GradescopeResults, output=sys.stdout):
+    output.write(json.dumps(results, indent=4, ensure_ascii=False))
+
+
+def aggregate_tests(*results: GradescopeResults) -> list[TestScore]:
+    scores = []
+
+    for result in results:
+        if "tests" in result:
+            scores += result["tests"]
+
+    return scores
+
+
+def load_common_steps():
+    """Allows behave to see the steps defined in conscience.common.
+
+    This exists to make explicit, the implicit behaviour of importing the module.
+    """
+    import conscience.common
 
 
 # OLD STUFF FOR SAFEKEEPING

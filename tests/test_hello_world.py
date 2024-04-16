@@ -3,23 +3,17 @@ Test a very simple GUI.
 """
 
 from pathlib import Path
-import sys
-from loguru import logger
-from conscience.main import setup
-
-from conscience.suite import ConscienceSuite
-
-logger.add(sys.stdout)
 
 import unittest
 
-from conscience import run_tests, build_config, setup_config, setup
+from conscience import build_config, setup_config, witness
+from conscience.suite import ConscienceSuite
 
 
 class TestHelloWorld(unittest.TestCase):
     def test_hello_world(self):
         suite = ConscienceSuite()
-        config = build_config()
+        config = build_config(is_gradescope=False)
         setup_config(
             config,
             suite,
@@ -27,7 +21,22 @@ class TestHelloWorld(unittest.TestCase):
             steps_dir=Path("steps"),
             environment_file=Path("environment.py"),
         )
-        run_tests(config, Path("tests/hello_world/hello_world_gui.py"))
+        results = witness(config, Path("tests/hello_world/hello_world_gui.py"))
+
+
+class TestHelloWorldGradeScope(unittest.TestCase):
+    def test_hello_world(self):
+        suite = ConscienceSuite()
+        config = build_config(is_gradescope=True)
+        setup_config(
+            config,
+            suite,
+            tests=[Path("tests/hello_world_tests")],
+            steps_dir=Path("steps"),
+            environment_file=Path("environment.py"),
+        )
+        results = witness(config, Path("tests/hello_world/hello_world_gui.py"))
+        print(results)
 
 
 if __name__ == "__main__":
