@@ -31,7 +31,7 @@ def find_widgets(selector: Selector, widget: tk.Widget) -> List[tk.Widget]:
 
 
 # Helper method for generating selectors
-def _build_selector[T](accessor: Accessor[T], expected: T) -> Selector:
+def _build_selector(accessor: Accessor[T], expected: T) -> Selector:
     def selector(widget: tk.Widget):
         try:
             actual = accessor(widget)
@@ -78,7 +78,7 @@ class WidgetSelector:
         return _build_selector(lambda widget: widget.cget("label").lower(), expected)
 
     @staticmethod
-    def by_image[T](registry: dict[str, T], expected: T):
+    def by_image(registry: dict[str, T], expected: T):
         """A selector which returns true iff the expected image is encountered and exists
         within the supplied registry."""
 
@@ -171,9 +171,11 @@ class CanvasSelector:
         return found
 
     @staticmethod
-    def get_canvas_images[
-        T
-    ](registry: dict[str, T], canvas: tk.Canvas, expected: T,) -> list[int]:
+    def get_canvas_images(
+        registry: dict[str, T],
+        canvas: tk.Canvas,
+        expected: T,
+    ) -> list[int]:
         """Finds all image elements on the canvas that match the given type.
 
         Returns:
